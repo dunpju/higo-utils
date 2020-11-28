@@ -1,4 +1,4 @@
-module higo-utils
+module github.com/dengpju/higo-utils
 
 go 1.14
 
