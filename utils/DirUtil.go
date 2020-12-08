@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -12,10 +11,11 @@ type Directory struct {
 	path   string   // 扫描完整路径
 	suffix string   // 文件后缀
 	list   []string // 文件列表
+	scan   bool     // 是否执行
 }
 
 func Dir(path string) *Directory {
-	return &Directory{path: path, suffix: "*"}
+	return &Directory{path: path, suffix: "*", scan:false}
 }
 
 // 后缀
@@ -25,14 +25,18 @@ func (this *Directory) Suffix(suffix string) *Directory {
 }
 
 // 列表
-func (this *Directory)List() []string {
+func (this *Directory) List() []string {
+	if this.scan {
+		this.list = scanner(this.path, this.suffix)
+	} else {
+		panic("Not scan")
+	}
 	return this.list
 }
 
 // 扫描
 func (this *Directory) Scan() *Directory {
-	fmt.Println(this)
-	this.list = scanner(this.path, this.suffix)
+	this.scan = true
 	return this
 }
 
