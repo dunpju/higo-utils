@@ -24,8 +24,8 @@ func (this *Directory) Suffix(suffix string) *Directory {
 	return this
 }
 
-// 列表
-func (this *Directory) List() []string {
+// 获取
+func (this *Directory) Get() []string {
 	if this.scan {
 		this.list = scanner(this.path, this.suffix)
 	} else {
