@@ -6,6 +6,5 @@ import (
 )
 
 func main()  {
-	d := utils.NewDir("./utils")
-	fmt.Println(d.Scan().List)
+	fmt.Println(utils.Dir("./utils").Suffix("go").Scan().List())
 }
