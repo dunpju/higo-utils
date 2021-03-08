@@ -1,5 +1,7 @@
 package utils
 
+import "fmt"
+
 // map
 type Map struct {
 	Map1 map[string]interface{} // map1
@@ -25,12 +27,59 @@ func MapOperation(m MapString) MapString {
 	return m
 }
 
-func (this MapString) Append(key string, value interface{}) MapString {
+// 添加元素
+func (this MapString) Put(key string, value interface{}) MapString {
 	this[key] = value
 	return this
 }
 
-func MapAppend(m map[string]interface{}, key string, value interface{}) map[string]interface{} {
-	m[key] = value
-	return m
+// 修改元素
+func (this MapString) Replace(key string, value interface{}) bool {
+	if _, ok := this[key]; ok {
+		this[key] = value
+	} else {
+		return false
+	}
+	return true
+}
+
+// 删除元素
+func (this MapString) Remove(key string) bool {
+	if _, ok := this[key]; ok {
+		delete(this, key)
+	} else {
+		return false
+	}
+	return true
+}
+
+// 清除map
+func (this MapString) Clear() bool {
+	for key, _ := range this {
+		delete(this, key)
+	}
+	return true
+}
+
+// 长度
+func (this MapString) Len() int {
+	return len(this)
+}
+
+type Callable func(key string, value interface{})
+
+// 遍历元素
+func (this MapString) ForEach(callable Callable) {
+	for key, value := range this {
+		callable(key, value)
+	}
+}
+
+// 查询元素
+func (this MapString) Get(key string) interface{} {
+	if value, ok := this[key]; ok {
+		return value
+	} else {
+		panic(fmt.Sprintf("`%s` The key doesn't exist in the map", key))
+	}
 }
