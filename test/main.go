@@ -22,5 +22,8 @@ func main() {
 	result.ForEach(func(key string, value interface{}) {
 		fmt.Println(key, value, "for")
 	})
-
+	rsa := utils.NewRsa().SetBits(1024).Generate()
+	fmt.Println(rsa)
+	e := utils.RsaPriEncrypt([]byte("123"), rsa)
+	fmt.Println(e)
 }
