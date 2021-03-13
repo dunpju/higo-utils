@@ -24,6 +24,16 @@ func main() {
 	})
 	rsa := utils.NewRsa().SetBits(1024).Generate()
 	fmt.Println(rsa)
-	e := utils.RsaPriEncrypt([]byte("123"), rsa)
+	e := utils.PubEncrypt([]byte("123"), rsa)
+	fmt.Println("===")
 	fmt.Println(e)
+	s := utils.PriDecrypt(e, rsa)
+	fmt.Println(string(s))
+	fmt.Println("=====")
+	s, _ = utils.PriEncrypt(rsa.PrivateKey(),[]byte("789"))
+	fmt.Println(string(s))
+	s,_ =utils.PubDecrypt(rsa.PublicKey(), s)
+	fmt.Println(string(s))
 }
+
+
