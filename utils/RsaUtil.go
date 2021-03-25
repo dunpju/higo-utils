@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"math/big"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -165,7 +166,7 @@ func (this *Rsa) Generate() *Rsa {
 	this.pubkey = bufferPublic.Bytes()
 
 	if "" == this.flag {
-		this.flag = string(time.Now().Unix())
+		this.flag = strconv.FormatInt(time.Now().Unix(), 10)
 	}
 
 	return this
