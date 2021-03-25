@@ -24,7 +24,7 @@ type Rsa struct {
 	expired        time.Duration
 	x509PrivateKey []byte
 	privateKey     *rsa.PrivateKey
-	publicKey     *rsa.PublicKey
+	publicKey      *rsa.PublicKey
 }
 
 func (this *Rsa) PublicKey() *rsa.PublicKey {
@@ -73,6 +73,10 @@ func (this *Rsa) SetBits(bits int) *Rsa {
 
 func (this *Rsa) Flag() string {
 	return this.flag
+}
+
+func (this *Rsa) SetFlag(flag string) {
+	this.flag = flag
 }
 
 func NewRsa() *Rsa {
@@ -160,6 +164,10 @@ func (this *Rsa) Generate() *Rsa {
 	}
 	this.pubkey = bufferPublic.Bytes()
 
+	if "" == this.flag {
+		this.flag = string(time.Now().Unix())
+	}
+
 	return this
 }
 
@@ -170,7 +178,10 @@ func (this *Rsa) Output() {
 		panic(err)
 	}
 	defer privateFile.Close()
-	privateFile.WriteString(string(this.prikey))
+	_, err = privateFile.WriteString(string(this.prikey))
+	if err != nil {
+		panic(err)
+	}
 
 	//pem格式编码
 	//创建用于保存公钥的文件
@@ -179,7 +190,10 @@ func (this *Rsa) Output() {
 		panic(err)
 	}
 	defer publicFile.Close()
-	publicFile.WriteString(string(this.pubkey))
+	_, err = publicFile.WriteString(string(this.pubkey))
+	if err != nil {
+		panic(err)
+	}
 }
 
 //RSA公钥加密
@@ -216,7 +230,6 @@ func PriDecrypt(cipherText []byte, r *Rsa) []byte {
 	//返回明文
 	return plainText
 }
-
 
 // copy from crypt/rsa/pkcs1v5.go
 var hashPrefixes = map[crypto.Hash][]byte{
