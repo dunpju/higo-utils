@@ -12,7 +12,13 @@ import (
 	"math/big"
 	"os"
 	"strconv"
+	"sync"
 	"time"
+)
+
+var (
+	RsaMap IMap
+	rsaOnce sync.Once
 )
 
 type Rsa struct {
@@ -26,6 +32,12 @@ type Rsa struct {
 	x509PrivateKey []byte
 	privateKey     *rsa.PrivateKey
 	publicKey      *rsa.PublicKey
+}
+
+func init()  {
+	rsaOnce.Do(func() {
+		RsaMap = make(MapString)
+	})
 }
 
 func (this *Rsa) PublicKey() *rsa.PublicKey {
@@ -120,7 +132,7 @@ func (this *Rsa) SetPublic(pubkey []byte) *Rsa {
 	return this
 }
 
-func (this *Rsa) Generate() *Rsa {
+func (this *Rsa) Build() *Rsa {
 	//GenerateKey函数使用随机数据生成器random生成一对具有指定字位数的RSA密钥
 	//Reader是一个全局、共享的密码用强随机数生成器
 	privateKey, err := rsa.GenerateKey(rand.Reader, this.bits)
@@ -168,6 +180,9 @@ func (this *Rsa) Generate() *Rsa {
 	if "" == this.flag {
 		this.flag = strconv.FormatInt(time.Now().Unix(), 10)
 	}
+
+	//放入容器
+	RsaMap.Put(this.flag, this)
 
 	return this
 }

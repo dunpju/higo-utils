@@ -1,6 +1,8 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // map
 type Map struct {
@@ -19,6 +21,17 @@ func (this *Map) Merge() *map[string]interface{} {
 		this.Map2[k] = v
 	}
 	return &this.Map1
+}
+
+type IMap interface {
+	Put(key string, value interface{}) MapString
+	Get(key string) interface{}
+	Replace(key string, value interface{}) bool
+	Remove(key string) bool
+	ForEach(callable Callable)
+	Clear() bool
+	Len() int
+	Merge(M MapString)
 }
 
 type MapString map[string]interface{}
@@ -82,4 +95,11 @@ func (this MapString) Get(key string) interface{} {
 	} else {
 		panic(fmt.Sprintf("`%s` The key doesn't exist in the map", key))
 	}
+}
+
+// 合并
+func (this MapString) Merge(M MapString) {
+	M.ForEach(func(key string, value interface{}) {
+		this.Put(key, value)
+	})
 }

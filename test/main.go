@@ -22,8 +22,8 @@ func main() {
 	result.ForEach(func(key string, value interface{}) {
 		fmt.Println(key, value, "for")
 	})
-	rsa := utils.NewRsa().SetBits(1024).Generate()
-	fmt.Println(rsa)
+	rsa := utils.NewRsa().SetBits(1024).Build()
+	fmt.Println(rsa.Flag())
 	e := utils.PubEncrypt([]byte("123"), rsa)
 	fmt.Println("===")
 	fmt.Println(e)
@@ -34,6 +34,7 @@ func main() {
 	fmt.Println(string(s))
 	s,_ =utils.PubDecrypt(rsa.PublicKey(), s)
 	fmt.Println(string(s))
+	fmt.Println((utils.RsaMap.Get(rsa.Flag()).(*utils.Rsa).Flag()))
 }
 
 
