@@ -33,8 +33,9 @@ func (this *TLS) Bits() int {
 	return this.bits
 }
 
-func (this *TLS) SetBits(bits int) {
+func (this *TLS) SetBits(bits int) *TLS {
 	this.bits = bits
+	return this
 }
 
 // 构造函数
