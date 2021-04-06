@@ -15,7 +15,7 @@ type Directory struct {
 }
 
 func Dir(path string) *Directory {
-	return &Directory{path: path, suffix: "*", scan:false}
+	return &Directory{path: path, suffix: "*", scan: false}
 }
 
 // 后缀
@@ -29,7 +29,7 @@ func (this *Directory) Get() []string {
 	if this.scan {
 		this.list = scanner(this.path, this.suffix)
 	} else {
-		panic("Not scan")
+		panic("There is no scan")
 	}
 	return this.list
 }
@@ -49,14 +49,14 @@ func scanner(p string, suffix string) []string {
 	var fileList []string
 	for _, file := range files {
 		if "*" != suffix {
-			if path.Ext(file.Name()) == "." + suffix {
-				fileList = append(fileList, p + string(os.PathSeparator) + file.Name())
+			if path.Ext(file.Name()) == "."+suffix {
+				fileList = append(fileList, p+string(os.PathSeparator)+file.Name())
 			}
 		} else {
-			fileList = append(fileList, p + string(os.PathSeparator) + file.Name())
+			fileList = append(fileList, p+string(os.PathSeparator)+file.Name())
 		}
 		if file.IsDir() {
-			fileList = append(fileList, scanner(p + string(os.PathSeparator) + file.Name(), suffix)...)
+			fileList = append(fileList, scanner(p+string(os.PathSeparator)+file.Name(), suffix)...)
 		}
 	}
 	return fileList

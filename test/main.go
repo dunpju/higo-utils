@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"github.com/dengpju/higo-utils/utils"
 )
@@ -25,9 +26,10 @@ func main() {
 	rsa := utils.NewRsa().SetBits(1024).Build()
 	fmt.Println(rsa.Flag())
 	e := utils.PubEncrypt([]byte("123"), rsa)
-	fmt.Println("===")
-	fmt.Println(e)
+	fmt.Println("公钥加密===")
+	fmt.Println(base64.StdEncoding.EncodeToString(e))
 	s := utils.PriDecrypt(e, rsa)
+	fmt.Println("私钥解密===")
 	fmt.Println(string(s))
 	fmt.Println("=====")
 	s, _ = utils.PriEncrypt(rsa.PrivateKey(),[]byte("789"))

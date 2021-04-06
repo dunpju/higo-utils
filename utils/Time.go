@@ -3,7 +3,7 @@ package utils
 import "time"
 
 // 获取当前时间戳
-func CurrentTimestamp () int64  {
+func CurrentTimestamp() int64 {
 	timestamp := time.Now().Unix()
 	return int64(int(timestamp))
 }

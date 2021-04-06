@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	RsaMap IMap
+	RsaMap  IMap
 	rsaOnce sync.Once
 )
 
@@ -34,7 +34,7 @@ type Rsa struct {
 	publicKey      *rsa.PublicKey
 }
 
-func init()  {
+func init() {
 	rsaOnce.Do(func() {
 		RsaMap = make(MapString)
 	})
@@ -147,7 +147,7 @@ func (this *Rsa) Build() *Rsa {
 	//使用pem格式对x509输出的内容进行编码
 	bufferPrivate := new(bytes.Buffer)
 	//构建一个pem.Block结构体对象
-	privateBlock := pem.Block{Type: "RSA Private Key", Bytes: this.x509PrivateKey}
+	privateBlock := pem.Block{Type: "RSA PRIVATE KEY", Bytes: this.x509PrivateKey}
 	// 生成私钥
 	err = pem.Encode(bufferPrivate, &privateBlock)
 	if err != nil {
@@ -168,7 +168,7 @@ func (this *Rsa) Build() *Rsa {
 	this.SetPublicKey(&publicKey)
 
 	//创建一个pem.Block结构体对象
-	publicBlock := pem.Block{Type: "RSA Public Key", Bytes: X509PublicKey}
+	publicBlock := pem.Block{Type: "PUBLIC KEY", Bytes: X509PublicKey}
 	// 提取公钥
 	bufferPublic := new(bytes.Buffer)
 	err = pem.Encode(bufferPublic, &publicBlock)
@@ -235,14 +235,17 @@ func PubEncrypt(plainText []byte, r *Rsa) []byte {
 //RSA私钥解密
 func PriDecrypt(cipherText []byte, r *Rsa) []byte {
 	//pem解码
-	block, _ := pem.Decode(r.prikey)
+	block, _ := pem.Decode(r.Prikey())
 	//X509解码
-	privateKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-	if err != nil {
-		panic(err)
+	privateKey, er := x509.ParsePKCS1PrivateKey(block.Bytes)
+	if er != nil {
+		panic(er)
 	}
 	//对密文进行解密
-	plainText, _ := rsa.DecryptPKCS1v15(rand.Reader, privateKey, cipherText)
+	plainText, e := rsa.DecryptPKCS1v15(rand.Reader, privateKey, cipherText)
+	if e != nil {
+		panic(e)
+	}
 	//返回明文
 	return plainText
 }

@@ -5,19 +5,19 @@ import (
 	"time"
 )
 
-type RandomUtil struct {}
+type Random struct{}
 
-func NewRandomUtil() *RandomUtil {
-	return &RandomUtil{}
+func NewRandom() *Random {
+	return &Random{}
 }
 
 // 随机0-86400
-func (this *RandomUtil) IntHour24ToSecond() int64 {
+func (this *Random) IntHour24ToSecond() int64 {
 	return rand.Int63n(24 * 60 * 60) // 24小时换算成秒
 }
 
 // 随机字符串
-func (this *RandomUtil) Str(length int) string  {
+func (this *Random) String(length int) string {
 	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	bytes := []byte(str)
 	result := []byte{}

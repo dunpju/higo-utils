@@ -6,7 +6,7 @@ import (
 )
 
 // 获取http地址
-func HttpAddr(ipPortRegexp string,requestHost string) string  {
+func HttpAddr(ipPortRegexp string, requestHost string) string {
 
 	// 正则判断是否是ip:port
 	if m, _ := regexp.MatchString(ipPortRegexp, requestHost); !m {

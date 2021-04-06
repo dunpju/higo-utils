@@ -14,23 +14,23 @@ import (
 )
 
 var (
-	crtFileName = "higo.crt.pem"
-	keyFileName = "higo.key.pem"
+	CrtFileName = "higo.crt.pem"
+	KeyFileName = "higo.key.pem"
 )
 
-type Ssl struct {
+type TLS struct {
 	outDir string
-	crt string
-	key string
+	crt    string
+	key    string
 }
 
 // 构造函数
-func NewSsl(outDir string, crt string, key string) *Ssl {
-	return &Ssl{outDir,crt,key}
+func NewTLS(outDir string, crt string, key string) *TLS {
+	return &TLS{outDir, crt, key}
 }
 
 // 生成ssl证书
-func (this *Ssl) Generate() {
+func (this *TLS) Generate() {
 
 	// 创建输出目录
 	this.createOutDir()
@@ -72,7 +72,7 @@ func (this *Ssl) Generate() {
 }
 
 // 更新ssl证书
-func (this *Ssl) Update()  {
+func (this *TLS) Update() {
 
 	// 创建输出目录
 	this.createOutDir()
@@ -83,7 +83,7 @@ func (this *Ssl) Update()  {
 
 		createTimestamp := crtFile.GetCreateTimestamp()
 
-		if (CurrentTimestamp() - createTimestamp) > new(RandomUtil).IntHour24ToSecond() {
+		if (CurrentTimestamp() - createTimestamp) > new(Random).IntHour24ToSecond() {
 			fmt.Println("重新生成证书")
 			this.Generate() // 重新生成证书
 		}
@@ -92,12 +92,13 @@ func (this *Ssl) Update()  {
 }
 
 // 创建输出目录
-func (this *Ssl) createOutDir()  {
+func (this *TLS) createOutDir() {
 	// 目录不存在，并创建
 	if _, err := os.Stat(this.outDir); os.IsNotExist(err) {
-		if os.Mkdir(this.outDir, os.ModePerm) != nil {}
+		if os.Mkdir(this.outDir, os.ModePerm) != nil {
+		}
 	}
 
-	this.crt = this.outDir + crtFileName
-	this.key = this.outDir + keyFileName
+	this.crt = this.outDir + CrtFileName
+	this.key = this.outDir + KeyFileName
 }
