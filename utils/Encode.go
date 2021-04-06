@@ -1,6 +1,8 @@
 package utils
 
-import "encoding/base64"
+import (
+	"encoding/base64"
+)
 
 func Base64Decode(src string) []byte {
 	b, err := base64.StdEncoding.DecodeString(src)

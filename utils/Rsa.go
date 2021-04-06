@@ -21,6 +21,22 @@ var (
 	rsaOnce sync.Once
 )
 
+type Bytes []byte
+
+func (this Bytes) String() BytesString {
+	return BytesString(this)
+}
+
+func (this Bytes) Base64Encode() BytesString {
+	return BytesString(Base64Encode(this))
+}
+
+type BytesString string
+
+func (this BytesString) Base64Decode() Bytes {
+	return Base64Decode(string(this))
+}
+
 type Rsa struct {
 	pubkey         []byte
 	prikey         []byte
@@ -212,44 +228,6 @@ func (this *Rsa) Output() {
 	}
 }
 
-//RSA公钥加密
-func PubEncrypt(plainText []byte, r *Rsa) []byte {
-	//pem解码
-	block, _ := pem.Decode(r.pubkey)
-	//x509解码
-	publicKeyInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
-	if err != nil {
-		panic(err)
-	}
-	//类型断言
-	publicKey := publicKeyInterface.(*rsa.PublicKey)
-	//对明文进行加密
-	cipherText, err := rsa.EncryptPKCS1v15(rand.Reader, publicKey, plainText)
-	if err != nil {
-		panic(err)
-	}
-	//返回密文
-	return cipherText
-}
-
-//RSA私钥解密
-func PriDecrypt(cipherText []byte, r *Rsa) []byte {
-	//pem解码
-	block, _ := pem.Decode(r.Prikey())
-	//X509解码
-	privateKey, er := x509.ParsePKCS1PrivateKey(block.Bytes)
-	if er != nil {
-		panic(er)
-	}
-	//对密文进行解密
-	plainText, e := rsa.DecryptPKCS1v15(rand.Reader, privateKey, cipherText)
-	if e != nil {
-		panic(e)
-	}
-	//返回明文
-	return plainText
-}
-
 // copy from crypt/rsa/pkcs1v5.go
 var hashPrefixes = map[crypto.Hash][]byte{
 	crypto.MD5:       {0x30, 0x20, 0x30, 0x0c, 0x06, 0x08, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x05, 0x05, 0x00, 0x04, 0x10},
@@ -298,6 +276,7 @@ func leftPad(input []byte, size int) (out []byte) {
 	copy(out[len(out)-n:], input)
 	return
 }
+
 func unLeftPad(input []byte) (out []byte) {
 	n := len(input)
 	t := 2
@@ -338,17 +317,58 @@ func publicDecrypt(pub *rsa.PublicKey, hash crypto.Hash, hashed []byte, sig []by
 	return
 }
 
-func PriEncrypt(privt *rsa.PrivateKey, data []byte) ([]byte, error) {
+// 私钥加密
+func PriEncrypt(privt *rsa.PrivateKey, data []byte) Bytes {
 	signData, err := rsa.SignPKCS1v15(nil, privt, crypto.Hash(0), data)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	return signData, nil
+	return signData
 }
-func PubDecrypt(pub *rsa.PublicKey, data []byte) ([]byte, error) {
+
+// 公钥解密
+func PubDecrypt(pub *rsa.PublicKey, data []byte) Bytes {
 	decData, err := publicDecrypt(pub, crypto.Hash(0), nil, data)
 	if err != nil {
-		return nil, err
+		print(err)
 	}
-	return decData, nil
+	return decData
+}
+
+//公钥加密
+func PubEncrypt(r *Rsa, plainText []byte) Bytes {
+	//pem解码
+	block, _ := pem.Decode(r.pubkey)
+	//x509解码
+	publicKeyInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		panic(err)
+	}
+	//类型断言
+	publicKey := publicKeyInterface.(*rsa.PublicKey)
+	//对明文进行加密
+	cipherText, err := rsa.EncryptPKCS1v15(rand.Reader, publicKey, plainText)
+	if err != nil {
+		panic(err)
+	}
+	//返回密文
+	return cipherText
+}
+
+//私钥解密
+func PriDecrypt(r *Rsa, cipherText []byte) Bytes {
+	//pem解码
+	block, _ := pem.Decode(r.Prikey())
+	//X509解码
+	privateKey, er := x509.ParsePKCS1PrivateKey(block.Bytes)
+	if er != nil {
+		panic(er)
+	}
+	//对密文进行解密
+	plainText, e := rsa.DecryptPKCS1v15(rand.Reader, privateKey, cipherText)
+	if e != nil {
+		panic(e)
+	}
+	//返回明文
+	return plainText
 }
