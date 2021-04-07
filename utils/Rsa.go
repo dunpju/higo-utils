@@ -17,9 +17,15 @@ import (
 )
 
 var (
-	RsaMap  IMap
-	rsaOnce sync.Once
+	SecretContainer IMap
+	rsaOnce         sync.Once
 )
+
+func init() {
+	rsaOnce.Do(func() {
+		SecretContainer = make(MapString)
+	})
+}
 
 type Bytes []byte
 
@@ -48,12 +54,24 @@ type Rsa struct {
 	x509PrivateKey []byte
 	privateKey     *rsa.PrivateKey
 	publicKey      *rsa.PublicKey
+	limen          int
+	counter        int
 }
 
-func init() {
-	rsaOnce.Do(func() {
-		RsaMap = make(MapString)
-	})
+func (this *Rsa) Counter() int {
+	return this.counter
+}
+
+func (this *Rsa) IncCounter(counter int) {
+	this.counter += counter
+}
+
+func (this *Rsa) Limen() int {
+	return this.limen
+}
+
+func (this *Rsa) SetLimen(limen int) {
+	this.limen = limen
 }
 
 func (this *Rsa) PublicKey() *rsa.PublicKey {
@@ -198,7 +216,7 @@ func (this *Rsa) Build() *Rsa {
 	}
 
 	//放入容器
-	RsaMap.Put(this.flag, this)
+	SecretContainer.Put(this.flag, this)
 
 	return this
 }
@@ -318,8 +336,10 @@ func publicDecrypt(pub *rsa.PublicKey, hash crypto.Hash, hashed []byte, sig []by
 }
 
 // 私钥加密
-func PriEncrypt(privt *rsa.PrivateKey, data []byte) Bytes {
-	signData, err := rsa.SignPKCS1v15(nil, privt, crypto.Hash(0), data)
+func PriEncrypt(r *Rsa, data []byte) Bytes {
+	//计数
+	r.IncCounter(1)
+	signData, err := rsa.SignPKCS1v15(nil, r.PrivateKey(), crypto.Hash(0), data)
 	if err != nil {
 		panic(err)
 	}
@@ -327,8 +347,10 @@ func PriEncrypt(privt *rsa.PrivateKey, data []byte) Bytes {
 }
 
 // 公钥解密
-func PubDecrypt(pub *rsa.PublicKey, data []byte) Bytes {
-	decData, err := publicDecrypt(pub, crypto.Hash(0), nil, data)
+func PubDecrypt(r *Rsa, data []byte) Bytes {
+	//计数
+	r.IncCounter(1)
+	decData, err := publicDecrypt(r.PublicKey(), crypto.Hash(0), nil, data)
 	if err != nil {
 		print(err)
 	}
@@ -337,6 +359,8 @@ func PubDecrypt(pub *rsa.PublicKey, data []byte) Bytes {
 
 //公钥加密
 func PubEncrypt(r *Rsa, plainText []byte) Bytes {
+	//计数
+	r.IncCounter(1)
 	//pem解码
 	block, _ := pem.Decode(r.pubkey)
 	//x509解码
@@ -357,6 +381,8 @@ func PubEncrypt(r *Rsa, plainText []byte) Bytes {
 
 //私钥解密
 func PriDecrypt(r *Rsa, cipherText []byte) Bytes {
+	//计数
+	r.IncCounter(1)
 	//pem解码
 	block, _ := pem.Decode(r.Prikey())
 	//X509解码
@@ -375,9 +401,12 @@ func PriDecrypt(r *Rsa, cipherText []byte) Bytes {
 
 // 密钥过期清除
 func SecretExpiredClear() {
-	RsaMap.ForEach(func(key string, value interface{}) {
-		if CurrentTimestamp() >= value.(*Rsa).Expired() {
-			RsaMap.Remove(key)
+	SecretContainer.ForEach(func(key string, value interface{}) {
+		r := value.(*Rsa)
+		if r.Expired() > 0 && CurrentTimestamp() >= r.Expired() {
+			SecretContainer.Remove(key)
+		} else if r.Limen() > 0 && r.Counter() >= r.Limen() {
+			SecretContainer.Remove(key)
 		}
 	})
 }

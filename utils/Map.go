@@ -37,6 +37,8 @@ type IMap interface {
 
 type MapString map[string]interface{}
 
+type MapInt MapString
+
 func MapOperation(m MapString) MapString {
 	return m
 }
