@@ -44,7 +44,7 @@ type Rsa struct {
 	priFile        string
 	bits           int
 	flag           string
-	expired        time.Duration
+	expired        int64
 	x509PrivateKey []byte
 	privateKey     *rsa.PrivateKey
 	publicKey      *rsa.PublicKey
@@ -82,11 +82,11 @@ func (this *Rsa) SetX509PrivateKey(x509PrivateKey []byte) *Rsa {
 	return this
 }
 
-func (this *Rsa) Expired() time.Duration {
+func (this *Rsa) Expired() int64 {
 	return this.expired
 }
 
-func (this *Rsa) SetExpired(expired time.Duration) *Rsa {
+func (this *Rsa) SetExpired(expired int64) *Rsa {
 	this.expired = expired
 	return this
 }
@@ -371,4 +371,13 @@ func PriDecrypt(r *Rsa, cipherText []byte) Bytes {
 	}
 	//返回明文
 	return plainText
+}
+
+// 密钥过期清除
+func SecretExpiredClear() {
+	RsaMap.ForEach(func(key string, value interface{}) {
+		if CurrentTimestamp() >= value.(*Rsa).Expired() {
+			RsaMap.Remove(key)
+		}
+	})
 }

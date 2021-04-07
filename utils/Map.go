@@ -26,6 +26,7 @@ func (this *Map) Merge() *map[string]interface{} {
 type IMap interface {
 	Put(key string, value interface{}) MapString
 	Get(key string) interface{}
+	Exist(key string) bool
 	Replace(key string, value interface{}) bool
 	Remove(key string) bool
 	ForEach(callable Callable)
@@ -95,6 +96,14 @@ func (this MapString) Get(key string) interface{} {
 	} else {
 		panic(fmt.Sprintf("`%s` The key doesn't exist in the map", key))
 	}
+}
+
+// 元素是否存在
+func (this MapString) Exist(key string) bool {
+	if _, ok := this[key]; ok {
+		return true
+	}
+	return false
 }
 
 // 合并
