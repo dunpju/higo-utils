@@ -58,28 +58,40 @@ type Rsa struct {
 	counter        int
 }
 
+func NewRsa() *Rsa {
+	return &Rsa{}
+}
+
 func (this *Rsa) Counter() int {
 	return this.counter
 }
 
-func (this *Rsa) IncCounter(counter int) {
+func (this *Rsa) SetCounter(counter int) *Rsa {
+	this.counter = counter
+	return this
+}
+
+func (this *Rsa) IncCounter(counter int) *Rsa {
 	this.counter += counter
+	return this
 }
 
 func (this *Rsa) Limen() int {
 	return this.limen
 }
 
-func (this *Rsa) SetLimen(limen int) {
+func (this *Rsa) SetLimen(limen int) *Rsa {
 	this.limen = limen
+	return this
 }
 
 func (this *Rsa) PublicKey() *rsa.PublicKey {
 	return this.publicKey
 }
 
-func (this *Rsa) SetPublicKey(publicKey *rsa.PublicKey) {
+func (this *Rsa) SetPublicKey(publicKey *rsa.PublicKey) *Rsa {
 	this.publicKey = publicKey
+	return this
 }
 
 func (this *Rsa) PrivateKey() *rsa.PrivateKey {
@@ -122,12 +134,9 @@ func (this *Rsa) Flag() string {
 	return this.flag
 }
 
-func (this *Rsa) SetFlag(flag string) {
+func (this *Rsa) SetFlag(flag string) *Rsa {
 	this.flag = flag
-}
-
-func NewRsa() *Rsa {
-	return &Rsa{}
+	return this
 }
 
 func (this *Rsa) PriFile() string {
@@ -152,7 +161,7 @@ func (this *Rsa) Prikey() []byte {
 	return this.prikey
 }
 
-func (this *Rsa) SetPrivate(prikey []byte) *Rsa {
+func (this *Rsa) SetPrikey(prikey []byte) *Rsa {
 	this.prikey = prikey
 	return this
 }
@@ -161,7 +170,7 @@ func (this *Rsa) Pubkey() []byte {
 	return this.pubkey
 }
 
-func (this *Rsa) SetPublic(pubkey []byte) *Rsa {
+func (this *Rsa) SetPubkey(pubkey []byte) *Rsa {
 	this.pubkey = pubkey
 	return this
 }

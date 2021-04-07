@@ -26,8 +26,8 @@ func main() {
 	})
 	rsa := utils.NewRsa().SetBits(1024).Build()
 	fmt.Println("当前时间戳", utils.CurrentTimestamp())
-	//rsa.SetExpired(utils.CurrentTimestamp() + 3)
-	rsa.SetLimen(1)
+	rsa.SetExpired(utils.CurrentTimestamp() + 6)
+	rsa.SetLimen(10)
 	fmt.Println(rsa.Flag())
 
 	// 公钥加密
