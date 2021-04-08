@@ -121,7 +121,7 @@ func (this *TLS) Update() {
 
 		createTimestamp := crtFile.GetCreateTimestamp()
 
-		if (CurrentTimestamp() - createTimestamp) > new(Random).IntHour24ToSecond() {
+		if (Time() - createTimestamp) > new(Random).IntHour24ToSecond() {
 			fmt.Println("重新生成证书")
 			this.Build() // 重新生成证书
 		}

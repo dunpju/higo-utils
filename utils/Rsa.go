@@ -412,7 +412,7 @@ func PriDecrypt(r *Rsa, cipherText []byte) Bytes {
 func SecretExpiredClear() {
 	SecretContainer.ForEach(func(key string, value interface{}) {
 		r := value.(*Rsa)
-		if r.Expired() > 0 && CurrentTimestamp() >= r.Expired() {
+		if r.Expired() > 0 && Time() >= r.Expired() {
 			SecretContainer.Remove(key)
 		} else if r.Limen() > 0 && r.Counter() >= r.Limen() {
 			SecretContainer.Remove(key)

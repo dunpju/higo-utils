@@ -55,19 +55,19 @@ func (this *File) GetAccessTimestamp() int64 {
 // 获取文件创建时间
 func (this *File) GetCreateTime() string {
 	timestamp := this.GetCreateTimestamp()
-	return TimestampToTime(timestamp)
+	return Date(timestamp)
 }
 
 // 获取文件更新时间
 func (this *File) GetModifyTime() string {
 	timestamp := this.GetModifyTimestamp()
-	return TimestampToTime(timestamp)
+	return Date(timestamp)
 }
 
 // 获取文件访问时间
 func (this *File) GetAccessTime() string {
 	timestamp := this.GetAccessTimestamp()
-	return TimestampToTime(timestamp)
+	return Date(timestamp)
 }
 
 // 文件是否存在

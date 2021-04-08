@@ -1,13 +1,13 @@
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
 	"github.com/dengpju/higo-utils/utils"
-	"time"
 )
 
 func main() {
+	/**
+	//map
 	fmt.Println(utils.Dir("./utils").Scan().Suffix("go").Get())
 	result := utils.MapOperation(make(map[string]interface{})).Put("key1", "value1").Put("key2", "value2")
 	fmt.Println(result)
@@ -24,9 +24,13 @@ func main() {
 	result.ForEach(func(key string, value interface{}) {
 		fmt.Println(key, value, "for")
 	})
+	 */
+
+	/**
+	// Rsa
 	rsa := utils.NewRsa().SetBits(1024).Build()
-	fmt.Println("当前时间戳", utils.CurrentTimestamp())
-	rsa.SetExpired(utils.CurrentTimestamp() + 6)
+	fmt.Println("当前时间戳", utils.Time())
+	rsa.SetExpired(utils.Time() + 6)
 	rsa.SetLimen(10)
 	fmt.Println(rsa.Flag())
 
@@ -43,14 +47,14 @@ func main() {
 	if i := utils.SecretContainer.Len(); i > 0 {
 		fmt.Println("有", i, "个秘钥对")
 	}
-	//utils.SecretContainer.ForEach(func(key string, value interface{}) {
-	//	fmt.Println(key, value.(*utils.Rsa).Expired())
-	//	if utils.CurrentTimestamp() >= value.(*utils.Rsa).Expired() {
-	//		fmt.Println("秘钥对过期了")
-	//		utils.SecretContainer.Remove(key)
-	//		fmt.Println("删除过期秘钥对")
-	//	}
-	//})
+	utils.SecretContainer.ForEach(func(key string, value interface{}) {
+		fmt.Println(key, value.(*utils.Rsa).Expired())
+		if utils.CurrentTimestamp() >= value.(*utils.Rsa).Expired() {
+			fmt.Println("秘钥对过期了")
+			utils.SecretContainer.Remove(key)
+			fmt.Println("删除过期秘钥对")
+		}
+	})
 	utils.SecretExpiredClear()
 	if i := utils.SecretContainer.Len(); i <= 0 {
 		fmt.Println("有", i, "个秘钥对")
@@ -68,4 +72,9 @@ func main() {
 	if utils.SecretContainer.Exist(rsa.Flag()) {
 		fmt.Println(utils.SecretContainer.Get(rsa.Flag()).(*utils.Rsa).Flag())
 	}
+	 */
+	fmt.Println(utils.Time())
+	fmt.Println(utils.Date(utils.Time(), "Y/m/d"))
+	fmt.Println(utils.Strtotime("2021-03-08 22:19:30"))
+
 }

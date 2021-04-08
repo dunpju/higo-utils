@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"crypto/md5"
 	"encoding/base64"
+	"encoding/hex"
 )
 
 func Base64Decode(src string) []byte {
@@ -15,4 +17,10 @@ func Base64Decode(src string) []byte {
 func Base64Encode(src []byte) string {
 	s := base64.StdEncoding.EncodeToString(src)
 	return s
+}
+
+func Md5(src string) string {
+	h := md5.New()
+	h.Write([]byte(src))
+	return hex.EncodeToString(h.Sum(nil))
 }
