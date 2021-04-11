@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/dengpju/higo-utils/utils"
+	"time"
 )
 
 func main() {
@@ -24,7 +25,7 @@ func main() {
 	result.ForEach(func(key string, value interface{}) {
 		fmt.Println(key, value, "for")
 	})
-	 */
+	*/
 
 	/**
 	// Rsa
@@ -72,9 +73,48 @@ func main() {
 	if utils.SecretContainer.Exist(rsa.Flag()) {
 		fmt.Println(utils.SecretContainer.Get(rsa.Flag()).(*utils.Rsa).Flag())
 	}
-	 */
+	*/
 	fmt.Println(utils.Time())
 	fmt.Println(utils.Date(utils.Time(), "Y/m/d"))
 	fmt.Println(utils.Strtotime("2021-03-08 22:19:30"))
+	fmt.Println(utils.Strtotime("-2day +1 hour +1 minute"))
+	fmt.Println()
 
+	month := time.Now().Month()
+	year := time.Now().Year()
+
+	switch month {
+	case time.April, time.June, time.September, time.November:
+		//if day > 30 {
+		//	return false
+		//}
+		fmt.Println(30)
+	case time.February:
+		// leap year
+		if year%4 == 0 && (year%100 != 0 || year%400 == 0) {
+			//if day > 29 {
+			//	return false
+			//}
+			fmt.Println(29)
+		} else {
+			fmt.Println(28)
+		}
+	default:
+		fmt.Println(31)
+	}
+
+	//fmt.Println(time.Second * time.Duration(1 * 60))
+
+	/**
+	//flysnowRegexp := regexp.MustCompile(`(\+|\-|)\s*(\d+)\s*(year|mouth|day|hour|minute|second)`)
+	flysnowRegexp := regexp.MustCompile(`(\+|\-|)\s*(\d+)\s*(year|mouth|day|hour|minute|second)`)
+	params := flysnowRegexp.FindAllStringSubmatch("-2day +1 hour +1 minute", -1)
+
+	for _, param := range params {
+		for _, p := range param {
+			fmt.Println(p)
+		}
+	}
+
+	*/
 }
