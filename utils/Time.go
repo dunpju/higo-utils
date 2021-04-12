@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"regexp"
 	"time"
 )
@@ -78,7 +77,6 @@ func Strtotime(datetime string, baseTimestamp ...int64) int64 {
 		if matchs := rege.FindAllStringSubmatch(datetime, -1); len(matchs) > 0 {
 			var add time.Duration
 			for _, match := range matchs {
-				fmt.Println(match)
 				if minute == match[3] {
 					add = time.Minute * time.Duration(Int64(match[2]))
 					if minus == match[1] {
