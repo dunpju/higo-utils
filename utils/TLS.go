@@ -117,9 +117,9 @@ func (this *TLS) Update() {
 
 	// 判断创建时间
 	crtFile := NewFile(this.crt)
-	if crtFile.IsExist() {
+	if crtFile.Exist() {
 
-		createTimestamp := crtFile.GetCreateTimestamp()
+		createTimestamp := crtFile.CreateTimestamp()
 
 		if (Time() - createTimestamp) > new(Random).IntHour24ToSecond() {
 			fmt.Println("重新生成证书")

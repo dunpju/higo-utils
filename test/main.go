@@ -1,11 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"github.com/dengpju/higo-utils/utils"
-	"time"
-)
-
 func main() {
 	/**
 	//map
@@ -74,11 +68,13 @@ func main() {
 		fmt.Println(utils.SecretContainer.Get(rsa.Flag()).(*utils.Rsa).Flag())
 	}
 	*/
+
+	/**
+	//Strtotime
 	fmt.Println(utils.Time())
 	fmt.Println(utils.Date(utils.Time(), "Y/m/d"))
 	fmt.Println(utils.Strtotime("2021-03-08 22:19:30"))
-	fmt.Println(utils.Strtotime("-2day +1 hour +1 minute"))
-	fmt.Println()
+	fmt.Println(utils.Strtotime("-2day 1hour +1 minute"))
 
 	month := time.Now().Month()
 	year := time.Now().Year()
@@ -104,6 +100,8 @@ func main() {
 	}
 
 	//fmt.Println(time.Second * time.Duration(1 * 60))
+
+	 */
 
 	/**
 	//flysnowRegexp := regexp.MustCompile(`(\+|\-|)\s*(\d+)\s*(year|mouth|day|hour|minute|second)`)

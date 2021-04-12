@@ -17,7 +17,7 @@ func NewFile(name string) *File {
 }
 
 // 获取文件创建时间戳
-func (this *File) GetCreateTimestamp() int64 {
+func (this *File) CreateTimestamp() int64 {
 	fileInfo, _ := os.Stat(this.Name)
 	t := reflect.ValueOf(fileInfo.Sys())
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
@@ -29,7 +29,7 @@ func (this *File) GetCreateTimestamp() int64 {
 }
 
 // 获取文件更新时间戳
-func (this *File) GetModifyTimestamp() int64 {
+func (this *File) ModifyTimestamp() int64 {
 	fileInfo, _ := os.Stat(this.Name)
 	t := reflect.ValueOf(fileInfo.Sys())
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
@@ -41,7 +41,7 @@ func (this *File) GetModifyTimestamp() int64 {
 }
 
 // 获取文件访问时间戳
-func (this *File) GetAccessTimestamp() int64 {
+func (this *File) AccessTimestamp() int64 {
 	fileInfo, _ := os.Stat(this.Name)
 	t := reflect.ValueOf(fileInfo.Sys())
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
@@ -53,25 +53,25 @@ func (this *File) GetAccessTimestamp() int64 {
 }
 
 // 获取文件创建时间
-func (this *File) GetCreateTime() string {
-	timestamp := this.GetCreateTimestamp()
+func (this *File) CreateTime() string {
+	timestamp := this.CreateTimestamp()
 	return Date(timestamp)
 }
 
 // 获取文件更新时间
-func (this *File) GetModifyTime() string {
-	timestamp := this.GetModifyTimestamp()
+func (this *File) ModifyTime() string {
+	timestamp := this.ModifyTimestamp()
 	return Date(timestamp)
 }
 
 // 获取文件访问时间
-func (this *File) GetAccessTime() string {
-	timestamp := this.GetAccessTimestamp()
+func (this *File) AccessTime() string {
+	timestamp := this.AccessTimestamp()
 	return Date(timestamp)
 }
 
 // 文件是否存在
-func (this *File) IsExist() bool {
+func (this *File) Exist() bool {
 	if _, err := os.Stat(this.Name); os.IsNotExist(err) {
 		return false
 	}
