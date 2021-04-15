@@ -15,3 +15,24 @@ func Ifindex(slice []interface{}, index int) interface{} {
 	}
 	return nil
 }
+
+func IfStringIndex(slice []string, index int) string {
+	if len(slice) > index {
+		return slice[index]
+	}
+	panic("index nonexistent")
+}
+
+func IfIntIndex(slice []int, index int) int {
+	if len(slice) > index {
+		return slice[index]
+	}
+	panic("index nonexistent")
+}
+
+func IfInt64Index(slice []int64, index int) int64 {
+	if len(slice) > index {
+		return slice[index]
+	}
+	panic("index nonexistent")
+}

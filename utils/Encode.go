@@ -24,3 +24,17 @@ func Md5(src string) string {
 	h.Write([]byte(src))
 	return hex.EncodeToString(h.Sum(nil))
 }
+
+//将byte转换16进制的字符串
+func HexEncode(src []byte) string {
+	return hex.EncodeToString(src)
+}
+
+//将16进制的字符串转换byte
+func HexDecode(s string) []byte {
+	h, err := hex.DecodeString(s)
+	if err != nil {
+		panic(err)
+	}
+	return h
+}

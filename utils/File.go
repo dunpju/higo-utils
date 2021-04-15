@@ -8,12 +8,31 @@ import (
 
 // 自定义文件结构体
 type File struct {
-	Name string // 文件名(完整路径)
+	Name string //文件名(完整路径)
+	file *os.File
 }
 
 // 构造函数
 func NewFile(name string) *File {
-	return &File{name}
+	return &File{Name: name}
+}
+
+// 创建
+func (this *File) Create() *File {
+	this.file = Mkfile(this.Name)
+	return this
+}
+
+// 关闭文件句柄
+func (this *File) Close() *File {
+	defer this.file.Close()
+	return this
+}
+
+// 删除
+func (this *File) Remove() *File {
+	Remove(this.Name)
+	return this
 }
 
 // 获取文件创建时间戳

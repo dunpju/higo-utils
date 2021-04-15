@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"github.com/dengpju/higo-utils/utils"
+)
+
 func main() {
 	/**
 	//map
@@ -101,7 +106,7 @@ func main() {
 
 	//fmt.Println(time.Second * time.Duration(1 * 60))
 
-	 */
+	*/
 
 	/**
 	//flysnowRegexp := regexp.MustCompile(`(\+|\-|)\s*(\d+)\s*(year|mouth|day|hour|minute|second)`)
@@ -115,4 +120,15 @@ func main() {
 	}
 
 	*/
+
+	fmt.Println(utils.Basename("testweb\\home.php", ".php"))
+	fmt.Println(utils.Dirname("\\00\\testweb\\home.php"))
+	fmt.Println(utils.Dirname("\\00\\11\\testweb"))
+	fmt.Println(utils.Dirslice(".\\00\\11\\testweb\\home.php"))
+	fmt.Println(utils.Mkdir(".\\00\\11\\testweb", 0666))
+	//fmt.Println(utils.Remove(".\\00\\11\\11"))
+	fmt.Println(utils.Emdir(".\\00\\11"))
+	//fmt.Println(utils.Rmdir(".\\00\\11"))
+
+
 }
