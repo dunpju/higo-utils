@@ -130,6 +130,7 @@ func main() {
 	fmt.Println(utils.Emdir(".\\00\\11"))
 	//fmt.Println(utils.Rmdir(".\\00\\11"))
 	fmt.Println(utils.Pathstring([]string{".", "data", "user"}))
+	utils.NewFile(".\\00\\22").File().WriteString("ggg")
 
 
 }

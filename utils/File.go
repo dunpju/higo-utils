@@ -9,6 +9,8 @@ import (
 	"reflect"
 )
 
+var FileFlag = os.O_APPEND
+
 // 自定义文件结构体
 type File struct {
 	Name string //文件名(完整路径)
@@ -19,7 +21,7 @@ type File struct {
 func NewFile(name string) *File {
 	f := &File{Name: name}
 	if f.Exist() {
-		file, err := os.Open(f.Name)
+		file, err := os.OpenFile(f.Name, FileFlag, ModePerm)
 		if err != nil {
 			panic(err)
 		}
