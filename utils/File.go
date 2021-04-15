@@ -24,6 +24,8 @@ func NewFile(name string) *File {
 			panic(err)
 		}
 		f.file = file
+	} else {
+		f.Create()
 	}
 	return f
 }
