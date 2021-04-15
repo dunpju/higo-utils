@@ -1,7 +1,10 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"os"
 	"reflect"
 )
@@ -14,7 +17,15 @@ type File struct {
 
 // 构造函数
 func NewFile(name string) *File {
-	return &File{Name: name}
+	f := &File{Name: name}
+	if f.Exist() {
+		file, err := os.Open(f.Name)
+		if err != nil {
+			panic(err)
+		}
+		f.file = file
+	}
+	return f
 }
 
 // 创建
@@ -26,6 +37,33 @@ func (this *File) Create() *File {
 //文件句柄
 func (this *File) File() *os.File {
 	return this.file
+}
+
+//读取所有
+func (this *File) ReadAll() []byte {
+	defer this.Close()
+	b, err := ioutil.ReadAll(this.file)
+	if err != nil {
+		panic(err)
+	}
+	return b
+}
+
+func (this *File) ReadBlock(filePth string, bufSize int, hookFunc func([]byte)) error {
+	defer this.Close()
+	buf := make([]byte, bufSize) //一次读取多少个字节
+	bfRd := bufio.NewReader(this.file)
+	for {
+		n, err := bfRd.Read(buf)
+		hookFunc(buf[:n]) // n 是成功读取字节数
+
+		if err != nil { //遇到任何错误立即返回，并忽略 EOF 错误信息
+			if err == io.EOF {
+				return nil
+			}
+			return err
+		}
+	}
 }
 
 // 关闭文件句柄
@@ -45,7 +83,10 @@ func (this *File) Remove() *File {
 
 // 获取文件创建时间戳
 func (this *File) CreateTimestamp() int64 {
-	fileInfo, _ := os.Stat(this.Name)
+	fileInfo, err := os.Stat(this.Name)
+	if err != nil {
+		panic(err)
+	}
 	t := reflect.ValueOf(fileInfo.Sys())
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
 		lowDateTime := t.Elem().FieldByName("CreationTime").FieldByName("LowDateTime").Uint()
@@ -57,7 +98,10 @@ func (this *File) CreateTimestamp() int64 {
 
 // 获取文件更新时间戳
 func (this *File) ModifyTimestamp() int64 {
-	fileInfo, _ := os.Stat(this.Name)
+	fileInfo, err := os.Stat(this.Name)
+	if err != nil {
+		panic(err)
+	}
 	t := reflect.ValueOf(fileInfo.Sys())
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
 		lowDateTime := t.Elem().FieldByName("LastWriteTime").FieldByName("LowDateTime").Uint()
@@ -69,7 +113,10 @@ func (this *File) ModifyTimestamp() int64 {
 
 // 获取文件访问时间戳
 func (this *File) AccessTimestamp() int64 {
-	fileInfo, _ := os.Stat(this.Name)
+	fileInfo, err := os.Stat(this.Name)
+	if err != nil {
+		panic(err)
+	}
 	t := reflect.ValueOf(fileInfo.Sys())
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
 		lowDateTime := t.Elem().FieldByName("LastAccessTime").FieldByName("LowDateTime").Uint()
