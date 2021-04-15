@@ -23,10 +23,18 @@ func (this *File) Create() *File {
 	return this
 }
 
+//文件句柄
+func (this *File) File() *os.File {
+	return this.file
+}
+
 // 关闭文件句柄
-func (this *File) Close() *File {
-	defer this.file.Close()
-	return this
+func (this *File) Close() bool {
+	err := this.file.Close()
+	if err != nil {
+		panic(err)
+	}
+	return true
 }
 
 // 删除

@@ -129,6 +129,7 @@ func main() {
 	//fmt.Println(utils.Remove(".\\00\\11\\11"))
 	fmt.Println(utils.Emdir(".\\00\\11"))
 	//fmt.Println(utils.Rmdir(".\\00\\11"))
+	fmt.Println(utils.Pathstring([]string{".", "data", "user"}))
 
 
 }
