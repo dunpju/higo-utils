@@ -10,6 +10,7 @@ import (
 var PathSeparator = string(os.PathSeparator)
 var ModePerm = os.ModePerm
 
+//path文件名
 func Basename(path string, suffix ...string) string {
 	suff := ""
 	if len(suffix) > 0 {
@@ -24,17 +25,20 @@ func Basename(path string, suffix ...string) string {
 	return name
 }
 
+//path目录名
 func Dirname(path string) string {
 	paths := strings.Split(path, PathSeparator)
 	paths = paths[:len(paths)-1]
 	return strings.Join(paths, PathSeparator)
 }
 
+//目录path切片
 func Dirslice(path string) []string {
 	paths := strings.Split(path, PathSeparator)
 	return paths[:len(paths)-1]
 }
 
+//创建目录
 func Mkdir(dirname string, perm ...os.FileMode) bool {
 	if len(perm) > 0 {
 		ModePerm = perm[0]
@@ -95,4 +99,9 @@ func Mkfile(filename string) *os.File {
 		panic(err)
 	}
 	return f
+}
+
+//path切片 -> string
+func Pathstring(paths []string) string {
+	return strings.Join(paths, PathSeparator)
 }
