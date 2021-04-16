@@ -131,6 +131,9 @@ func main() {
 	//fmt.Println(utils.Rmdir(".\\00\\11"))
 	fmt.Println(utils.Pathstring([]string{".", "data", "user"}))
 	utils.NewFile(".\\00\\22").File().WriteString("ggg")
-
+	fmt.Println(utils.NewRandom().Int(1000))
+	fmt.Println(utils.NewRandom().Int64(1000))
+	fmt.Println(utils.NewRandom().BetweenInt(800, 1000))
+	fmt.Println(utils.NewRandom().BetweenInt64(800, 1000))
 
 }

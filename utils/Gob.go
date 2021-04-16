@@ -38,7 +38,7 @@ func (this *Gob) Encode(e interface{}) {
 func (this *Gob) Decode(e interface{}) {
 	enc := gob.NewDecoder(this.File)
 	err := enc.Decode(e)
-	if err != nil {
+	if err != nil && "EOF" != err.Error() {
 		panic(err)
 	}
 }

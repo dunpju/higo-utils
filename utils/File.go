@@ -9,6 +9,8 @@ import (
 	"reflect"
 )
 
+//覆盖 os.O_WRONLY | os.O_TRUNC | os.O_CREATE
+//追加 os.O_APPEND
 var FileFlag = os.O_APPEND
 
 // 自定义文件结构体
