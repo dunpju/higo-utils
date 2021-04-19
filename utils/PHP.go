@@ -7,16 +7,13 @@ import (
 	"strings"
 )
 
-var PathSeparator = string(os.PathSeparator)
-var ModePerm = os.ModePerm
-
 //path文件名
 func Basename(path string, suffix ...string) string {
 	suff := ""
 	if len(suffix) > 0 {
 		suff = suffix[0]
 	}
-	paths := strings.Split(path, PathSeparator)
+	paths := strings.Split(path, pathSeparator)
 	name := IfStringIndex(paths[len(paths)-1:], 0)
 	if suff != "" {
 		names := strings.Split(name, ".")
@@ -27,28 +24,46 @@ func Basename(path string, suffix ...string) string {
 
 //path目录名
 func Dirname(path string) string {
-	paths := strings.Split(path, PathSeparator)
+	paths := strings.Split(path, pathSeparator)
 	paths = paths[:len(paths)-1]
-	return strings.Join(paths, PathSeparator)
+	return strings.Join(paths, pathSeparator)
 }
 
 //目录path切片
 func Dirslice(path string) []string {
-	paths := strings.Split(path, PathSeparator)
+	paths := strings.Split(path, pathSeparator)
 	return paths[:len(paths)-1]
+}
+
+// 目录是否存在
+func DirExist(dirname string) bool {
+	if _, err := os.Stat(dirname); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		} else {
+			panic(err)
+		}
+	}
+	return true
 }
 
 //创建目录
 func Mkdir(dirname string, perm ...os.FileMode) bool {
 	if len(perm) > 0 {
-		ModePerm = perm[0]
+		modePerm = perm[0]
 	}
 	var dir []string
 	for _, p := range Dirslice(dirname) {
 		dir = append(dir, p)
-		tmpPath := strings.Join(dir, PathSeparator)
-		if _, err := os.Stat(tmpPath); os.IsNotExist(err) && tmpPath != "" {
-			if err := os.Mkdir(tmpPath, ModePerm); err != nil {
+		tmpPath := strings.Join(dir, pathSeparator)
+		if _, err := os.Stat(tmpPath); err != nil {
+			if os.IsNotExist(err) {
+				if tmpPath != "" {
+					if err := os.Mkdir(tmpPath, modePerm); err != nil {
+						panic(err)
+					}
+				}
+			} else {
 				panic(err)
 			}
 		}
@@ -103,5 +118,5 @@ func Mkfile(filename string) *os.File {
 
 //path切片 -> string
 func Pathstring(paths []string) string {
-	return strings.Join(paths, PathSeparator)
+	return strings.Join(paths, pathSeparator)
 }

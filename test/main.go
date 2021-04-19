@@ -24,7 +24,7 @@ func main() {
 	result.ForEach(func(key string, value interface{}) {
 		fmt.Println(key, value, "for")
 	})
-	*/
+	 */
 
 	/**
 	// Rsa
@@ -121,6 +121,7 @@ func main() {
 
 	*/
 
+	// File
 	fmt.Println(utils.Basename("testweb\\home.php", ".php"))
 	fmt.Println(utils.Dirname("\\00\\testweb\\home.php"))
 	fmt.Println(utils.Dirname("\\00\\11\\testweb"))
@@ -131,9 +132,16 @@ func main() {
 	//fmt.Println(utils.Rmdir(".\\00\\11"))
 	fmt.Println(utils.Pathstring([]string{".", "data", "user"}))
 	utils.NewFile(".\\00\\22").File().WriteString("ggg")
+	fmt.Println(utils.DirExist(".\\00\\111"))
+
+	/**
+	// Random
 	fmt.Println(utils.NewRandom().Int(1000))
 	fmt.Println(utils.NewRandom().Int64(1000))
 	fmt.Println(utils.NewRandom().BetweenInt(800, 1000))
 	fmt.Println(utils.NewRandom().BetweenInt64(800, 1000))
+
+	 */
+
 
 }

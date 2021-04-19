@@ -23,7 +23,7 @@ type File struct {
 func NewFile(name string) *File {
 	f := &File{Name: name}
 	if f.Exist() {
-		file, err := os.OpenFile(f.Name, FileFlag, ModePerm)
+		file, err := os.OpenFile(f.Name, FileFlag, modePerm)
 		if err != nil {
 			panic(err)
 		}
