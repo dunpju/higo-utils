@@ -23,7 +23,7 @@ func (this SliceString) Append(value string) SliceString {
 }
 
 func (this SliceString) Remove(dist string) SliceString {
-	var tmp = SliceString{}
+	var tmp SliceString
 	this.ForEach(func(index int, value string) {
 		if value != dist {
 			tmp.Append(value)
