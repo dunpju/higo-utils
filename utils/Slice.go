@@ -5,11 +5,11 @@ import (
 )
 
 type ISlice interface {
-	Append(value interface{}) ISlice
-	Insert(index int, value interface{}) ISlice
-	Delete(index int) ISlice
-	Remove(dist interface{}) ISlice
-	Replace(src, dist interface{}) ISlice
+	Append(value interface{}) interface{}
+	Insert(index int, value interface{}) interface{}
+	Delete(index int) interface{}
+	Remove(dist interface{}) interface{}
+	Replace(src, dist interface{}) interface{}
 	String() string
 	Separator(sep ...interface{}) string
 	Exist(value interface{}) bool
@@ -24,8 +24,12 @@ type SliceString struct {
 	value []string
 }
 
-func NewSliceString() *SliceString {
-	return &SliceString{}
+func NewSliceString(src ...string) *SliceString {
+	sl := &SliceString{}
+	for _, s := range src {
+		sl.Append(s)
+	}
+	return sl
 }
 
 func (this *SliceString) String() string {
@@ -40,12 +44,12 @@ func (this *SliceString) Separator(sep ...interface{}) string {
 	return strings.Join(this.value, s)
 }
 
-func (this *SliceString) Append(value interface{}) ISlice {
+func (this *SliceString) Append(value interface{}) interface{} {
 	this.value = append(this.value, value.(string))
 	return this
 }
 
-func (this *SliceString) Insert(index int, value interface{}) ISlice {
+func (this *SliceString) Insert(index int, value interface{}) interface{} {
 	var tmp []string
 	tmp = append(tmp, this.value[index:]...)
 	this.value = append(this.value[0:index], value.(string))
@@ -53,7 +57,7 @@ func (this *SliceString) Insert(index int, value interface{}) ISlice {
 	return this
 }
 
-func (this *SliceString) Remove(dist interface{}) ISlice {
+func (this *SliceString) Remove(dist interface{}) interface{} {
 	var tmp []string
 	this.ForEach(func(index int, value interface{}) {
 		if value.(string) != dist.(string) {
@@ -64,12 +68,12 @@ func (this *SliceString) Remove(dist interface{}) ISlice {
 	return this
 }
 
-func (this *SliceString) Delete(index int) ISlice {
+func (this *SliceString) Delete(index int) interface{} {
 	this.value = append(this.value[:index], this.value[index+1:]...)
 	return this
 }
 
-func (this *SliceString) Replace(src, dist interface{}) ISlice {
+func (this *SliceString) Replace(src, dist interface{}) interface{} {
 	this.ForEach(func(index int, value interface{}) {
 		if value.(string) == src.(string) {
 			this.value[index] = dist.(string)
