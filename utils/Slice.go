@@ -4,6 +4,11 @@ import "strings"
 
 type SliceString []string
 
+func NewSliceString() SliceString {
+	var sliceString SliceString
+	return sliceString
+}
+
 func (this SliceString) String(sep ...string) string {
 	s := ""
 	if len(sep) > 0 {
