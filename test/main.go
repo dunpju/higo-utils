@@ -197,6 +197,7 @@ func main() {
 		fmt.Println(index, value)
 	})
 	fmt.Println(sl.Exist("3"))
+	fmt.Println(sl.Value().([]string)[2:])
 	sl.Empty()
 	fmt.Printf("%p\n", sl)
 	fmt.Println(sl)

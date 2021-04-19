@@ -13,6 +13,7 @@ type ISlice interface {
 	String() string
 	Separator(sep ...interface{}) string
 	Exist(value interface{}) bool
+	Value() interface{}
 	ForEach(callable SliceCallable)
 	Len() int
 	Reverse()
@@ -106,6 +107,10 @@ func (this *SliceString) Exist(dist interface{}) bool {
 		}
 	}
 	return false
+}
+
+func (this *SliceString) Value() interface{} {
+	return this.value
 }
 
 //byte切片倒序
