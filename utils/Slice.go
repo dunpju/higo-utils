@@ -13,6 +13,7 @@ type ISlice interface {
 	String() string
 	Separator(sep ...interface{}) string
 	Exist(value interface{}) bool
+	Set(value interface{}) interface{}
 	Value() interface{}
 	ForEach(callable SliceCallable)
 	Len() int
@@ -111,6 +112,11 @@ func (this *SliceString) Exist(dist interface{}) bool {
 		}
 	}
 	return false
+}
+
+func (this *SliceString) Set(value interface{}) interface{} {
+	this.value = value.([]string)
+	return this
 }
 
 func (this *SliceString) Value() interface{} {
