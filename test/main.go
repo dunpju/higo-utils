@@ -121,6 +121,7 @@ func main() {
 
 	*/
 
+	/**
 	// File
 	fmt.Println(utils.Basename("testweb\\home.php", ".php"))
 	fmt.Println(utils.Dirname("\\00\\testweb\\home.php"))
@@ -134,6 +135,8 @@ func main() {
 	utils.NewFile(".\\00\\22").File().WriteString("ggg")
 	fmt.Println(utils.DirExist(".\\00\\111"))
 
+	 */
+
 	/**
 	// Random
 	fmt.Println(utils.NewRandom().Int(1000))
@@ -142,6 +145,64 @@ func main() {
 	fmt.Println(utils.NewRandom().BetweenInt64(800, 1000))
 
 	 */
+
+	// Slice
+	sl := utils.NewSliceString()
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.Append("2")
+	sl.Insert(0, "1")
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.Append("3")
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.ForEach(func(index int, value interface{}) {
+		fmt.Println(index, value)
+	})
+	sl.Insert(1, "11")
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.ForEach(func(index int, value interface{}) {
+		fmt.Println(index, value)
+	})
+	sl.Insert(3, "114")
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.ForEach(func(index int, value interface{}) {
+		fmt.Println(index, value)
+	})
+	sl.Remove("114")
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.ForEach(func(index int, value interface{}) {
+		fmt.Println(index, value)
+	})
+	sl.Delete(1)
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.ForEach(func(index int, value interface{}) {
+		fmt.Println(index, value)
+	})
+	sl.Replace("1", "11")
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.ForEach(func(index int, value interface{}) {
+		fmt.Println(index, value)
+	})
+	sl.Reverse()
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.ForEach(func(index int, value interface{}) {
+		fmt.Println(index, value)
+	})
+	fmt.Println(sl.Exist("3"))
+	sl.Empty()
+	fmt.Printf("%p\n", sl)
+	fmt.Println(sl)
+	sl.ForEach(func(index int, value interface{}) {
+		fmt.Println(index, value)
+	})
 
 
 }
