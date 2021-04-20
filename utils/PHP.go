@@ -22,10 +22,15 @@ func Basename(path string, suffix ...string) string {
 	return name
 }
 
-//path目录名
 func Dirname(path string) string {
 	paths := strings.Split(path, pathSeparator)
 	paths = paths[:len(paths)-1]
+	return strings.Join(paths, pathSeparator)
+}
+
+func DirBasename(path string) string {
+	paths := strings.Split(path, pathSeparator)
+	paths = paths[len(paths)-2 : len(paths)-1]
 	return strings.Join(paths, pathSeparator)
 }
 
