@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"fmt"
+	"encoding/json"
 )
 
 // map
@@ -33,6 +33,7 @@ type IMap interface {
 	Clear() bool
 	Len() int
 	Merge(M MapString)
+	String() string
 }
 
 type MapString map[string]interface{}
@@ -96,7 +97,7 @@ func (this MapString) Get(key string) interface{} {
 	if value, ok := this[key]; ok {
 		return value
 	} else {
-		panic(fmt.Sprintf("`%s` The key doesn't exist in the map", key))
+		panic("`" + key + "` The key doesn't exist in the map")
 	}
 }
 
@@ -113,4 +114,12 @@ func (this MapString) Merge(M MapString) {
 	M.ForEach(func(key string, value interface{}) {
 		this.Put(key, value)
 	})
+}
+
+func (this MapString) String() string {
+	mjson, err := json.Marshal(this)
+	if err != nil {
+		panic(err)
+	}
+	return string(mjson)
 }
