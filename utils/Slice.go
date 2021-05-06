@@ -13,6 +13,7 @@ type ISlice interface {
 	String() string
 	Separator(sep ...interface{}) string
 	Exist(value interface{}) bool
+	Clone(src *SliceString) interface{}
 	Set(value interface{}) interface{}
 	Value() interface{}
 	ForEach(callable SliceCallable)
@@ -121,6 +122,11 @@ func (this *SliceString) Set(value interface{}) interface{} {
 
 func (this *SliceString) Value() interface{} {
 	return this.value
+}
+
+func (this *SliceString) Clone(src *SliceString) interface{} {
+	copy(this.value, src.value)
+	return this
 }
 
 //byte切片倒序
