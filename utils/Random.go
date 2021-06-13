@@ -39,7 +39,7 @@ func (this *Random) Int(max int) int {
 }
 
 func (this *Random) BetweenInt(min int, max int) int {
-	if min >= max {
+	if min > max {
 		panic("min should not gte max")
 	}
 again:
@@ -55,7 +55,7 @@ func (this *Random) Int64(max int64) int64 {
 }
 
 func (this *Random) BetweenInt64(min int64, max int64) int64 {
-	if min >= max {
+	if min > max {
 		panic("min should not gte max")
 	}
 again:
