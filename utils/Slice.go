@@ -11,7 +11,7 @@ type ISlice interface {
 	Remove(dist interface{}) interface{}
 	Replace(src, dist interface{}) interface{}
 	String() string
-	Separator(sep ...interface{}) string
+	Join(sep ...string) string
 	Exist(value interface{}) bool
 	Clone(src *SliceString) interface{}
 	Set(value interface{}) interface{}
@@ -35,13 +35,13 @@ func NewSliceString(src ...string) *SliceString {
 }
 
 func (this *SliceString) String() string {
-	return "[" + strings.Join(this.value, " ") + "]"
+	return "[" + this.Join(" ") + "]"
 }
 
-func (this *SliceString) Separator(sep ...interface{}) string {
+func (this *SliceString) Join(sep ...string) string {
 	s := ""
 	if len(sep) > 0 {
-		s = sep[0].(string)
+		s = sep[0]
 	}
 	return strings.Join(this.value, s)
 }
