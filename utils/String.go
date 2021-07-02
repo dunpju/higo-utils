@@ -1,6 +1,9 @@
 package utils
 
-import "strconv"
+import (
+	"strconv"
+	"unicode"
+)
 
 // recover错误，转string
 func ErrorToString(r interface{}) string {
@@ -34,4 +37,18 @@ func IntString(i int) string {
 
 func Int64String(i int64) string {
 	return strconv.FormatInt(i, 10)
+}
+
+func Ucfirst(str string) string {
+	for i, v := range str {
+		return string(unicode.ToUpper(v)) + str[i+1:]
+	}
+	return ""
+}
+
+func Lcfirst(str string) string {
+	for i, v := range str {
+		return string(unicode.ToLower(v)) + str[i+1:]
+	}
+	return ""
 }
