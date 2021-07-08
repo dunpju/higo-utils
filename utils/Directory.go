@@ -2,7 +2,6 @@ package utils
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 )
@@ -44,7 +43,7 @@ func (this *Directory) Scan() *Directory {
 func scanner(p string, suffix string) []string {
 	files, err := ioutil.ReadDir(p)
 	if err != nil {
-		log.Println(err)
+		panic(err)
 	}
 	var fileList []string
 	for _, file := range files {
