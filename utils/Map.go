@@ -47,8 +47,6 @@ type ArrayMap struct {
 	value map[string]interface{}
 }
 
-type MapInt ArrayMap
-
 func Array() *ArrayMap {
 	return &ArrayMap{sort: make([]string, 0), value: make(map[string]interface{}, 0)}
 }
