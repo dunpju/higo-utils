@@ -123,6 +123,13 @@ func (this *ArrayMap) Replace(key string, value interface{}) bool {
 // 删除元素
 func (this *ArrayMap) Remove(key string) bool {
 	if _, ok := this.value[key]; ok {
+		tmp := make([]string, 0)
+		for _, v := range this.sort {
+			if v != key {
+				tmp = append(tmp, v)
+			}
+		}
+		this.sort = tmp
 		delete(this.value, key)
 	} else {
 		return false

@@ -60,7 +60,7 @@ func (this *SliceString) Insert(index int, value interface{}) interface{} {
 }
 
 func (this *SliceString) Remove(dist interface{}) interface{} {
-	var tmp []string
+	tmp := make([]string, 0)
 	this.ForEach(func(index int, value interface{}) {
 		if value.(string) != dist.(string) {
 			tmp = append(tmp, value.(string))

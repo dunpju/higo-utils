@@ -31,6 +31,8 @@ func main() {
 	fmt.Println(a)
 	fmt.Println(a.End())
 	fmt.Println(a)
+	a.Remove("1")
+	fmt.Println(a)
 	/**
 	// Rsa
 	rsa := utils.NewRsa().SetBits(1024).Build()
