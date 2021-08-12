@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"strconv"
 )
 
 // map
@@ -24,7 +25,12 @@ func (this *Map) Merge() *map[string]interface{} {
 }
 
 type IMap interface {
-	Put(key string, value interface{}) MapString
+	Put(key string, value interface{}) IMap
+	Push(value interface{}) IMap
+	Shift() interface{}
+	Pop() interface{}
+	Current() interface{}
+	End() interface{}
 	Get(key string) interface{}
 	Exist(key string) bool
 	Replace(key string, value interface{}) bool
@@ -32,32 +38,84 @@ type IMap interface {
 	ForEach(callable Callable)
 	Clear() bool
 	Len() int
-	Merge(M MapString)
+	Merge(M IMap)
 	String() string
 }
 
-type MapString map[string]interface{}
-
-type MapInt MapString
-
-func Array() MapString {
-	return make(MapString, 0)
+type ArrayMap struct {
+	sort  []string
+	value map[string]interface{}
 }
 
-func MapOperation(m MapString) MapString {
-	return m
+type MapInt ArrayMap
+
+func Array() *ArrayMap {
+	return &ArrayMap{sort: make([]string, 0), value: make(map[string]interface{}, 0)}
 }
 
 // 添加元素
-func (this MapString) Put(key string, value interface{}) MapString {
-	this[key] = value
+func (this *ArrayMap) Put(key string, value interface{}) IMap {
+	if _, ok := this.value[key]; ok {
+		this.Replace(key, value)
+	} else {
+		this.value[key] = value
+		this.sort = append(this.sort, key)
+	}
 	return this
 }
 
+func (this *ArrayMap) Push(value interface{}) IMap {
+	this.Put(strconv.Itoa(len(this.sort)), value)
+	return this
+}
+
+//弹出第一个元素
+func (this *ArrayMap) Shift() interface{} {
+	if len(this.sort) > 0 {
+		key := this.sort[0]
+		v := this.value[key]
+		this.sort = append(this.sort[:0], this.sort[0+1:]...)
+		delete(this.value, key)
+		return map[string]interface{}{key: v}
+	}
+	return nil
+}
+
+func (this *ArrayMap) Pop() interface{} {
+	length := len(this.sort)
+	if length > 0 {
+		key := this.sort[length-1]
+		v := this.value[key]
+		this.sort = this.sort[:len(this.sort)-1]
+		delete(this.value, key)
+		return map[string]interface{}{key: v}
+	}
+	return nil
+}
+
+func (this *ArrayMap) Current() interface{} {
+	if len(this.sort) > 0 {
+		key := this.sort[0]
+		v := this.value[key]
+		return map[string]interface{}{key: v}
+	}
+	return nil
+}
+
+func (this *ArrayMap) End() interface{} {
+	length := len(this.sort)
+	if length > 0 {
+		key := this.sort[length-1]
+		v := this.value[key]
+		return map[string]interface{}{key: v}
+	}
+	return nil
+}
+
 // 修改元素
-func (this MapString) Replace(key string, value interface{}) bool {
-	if _, ok := this[key]; ok {
-		this[key] = value
+func (this *ArrayMap) Replace(key string, value interface{}) bool {
+	if _, ok := this.value[key]; ok {
+		this.value[key] = value
 	} else {
 		return false
 	}
@@ -65,9 +123,9 @@ func (this MapString) Replace(key string, value interface{}) bool {
 }
 
 // 删除元素
-func (this MapString) Remove(key string) bool {
-	if _, ok := this[key]; ok {
-		delete(this, key)
+func (this *ArrayMap) Remove(key string) bool {
+	if _, ok := this.value[key]; ok {
+		delete(this.value, key)
 	} else {
 		return false
 	}
@@ -75,30 +133,29 @@ func (this MapString) Remove(key string) bool {
 }
 
 // 清除map
-func (this MapString) Clear() bool {
-	for key, _ := range this {
-		delete(this, key)
-	}
+func (this *ArrayMap) Clear() bool {
+	this.value = make(map[string]interface{}, 0)
+	this.sort = this.sort[0:0]
 	return true
 }
 
 // 长度
-func (this MapString) Len() int {
-	return len(this)
+func (this *ArrayMap) Len() int {
+	return len(this.sort)
 }
 
 type Callable func(key string, value interface{})
 
 // 遍历元素
-func (this MapString) ForEach(callable Callable) {
-	for key, value := range this {
-		callable(key, value)
+func (this *ArrayMap) ForEach(callable Callable) {
+	for _, key := range this.sort {
+		callable(key, this.value[key])
 	}
 }
 
 // 查询元素
-func (this MapString) Get(key string) interface{} {
-	if value, ok := this[key]; ok {
+func (this *ArrayMap) Get(key string) interface{} {
+	if value, ok := this.value[key]; ok {
 		return value
 	} else {
 		panic("`" + key + "` The key doesn't exist in the map")
@@ -106,22 +163,22 @@ func (this MapString) Get(key string) interface{} {
 }
 
 // 元素是否存在
-func (this MapString) Exist(key string) bool {
-	if _, ok := this[key]; ok {
+func (this *ArrayMap) Exist(key string) bool {
+	if _, ok := this.value[key]; ok {
 		return true
 	}
 	return false
 }
 
 // 合并
-func (this MapString) Merge(M MapString) {
-	M.ForEach(func(key string, value interface{}) {
+func (this *ArrayMap) Merge(m IMap) {
+	m.ForEach(func(key string, value interface{}) {
 		this.Put(key, value)
 	})
 }
 
-func (this MapString) String() string {
-	mjson, err := json.Marshal(this)
+func (this *ArrayMap) String() string {
+	mjson, err := json.Marshal(this.value)
 	if err != nil {
 		panic(err)
 	}

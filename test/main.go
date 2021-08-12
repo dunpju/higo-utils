@@ -25,7 +25,12 @@ func main() {
 		fmt.Println(key, value, "for")
 	})
 	 */
-
+	a := utils.Array().Push("11").Push("22").Push("33")
+	fmt.Println(a)
+	fmt.Println(a.Current())
+	fmt.Println(a)
+	fmt.Println(a.End())
+	fmt.Println(a)
 	/**
 	// Rsa
 	rsa := utils.NewRsa().SetBits(1024).Build()
@@ -49,7 +54,7 @@ func main() {
 	}
 	utils.SecretContainer.ForEach(func(key string, value interface{}) {
 		fmt.Println(key, value.(*utils.Rsa).Expired())
-		if utils.CurrentTimestamp() >= value.(*utils.Rsa).Expired() {
+		if utils.Time() >= value.(*utils.Rsa).Expired() {
 			fmt.Println("秘钥对过期了")
 			utils.SecretContainer.Remove(key)
 			fmt.Println("删除过期秘钥对")
@@ -72,7 +77,8 @@ func main() {
 	if utils.SecretContainer.Exist(rsa.Flag()) {
 		fmt.Println(utils.SecretContainer.Get(rsa.Flag()).(*utils.Rsa).Flag())
 	}
-	*/
+
+	 */
 
 	/**
 	//Strtotime
@@ -121,7 +127,7 @@ func main() {
 
 	*/
 
-
+	/**
 	// File
 	fmt.Println(utils.Basename("testweb\\home.php", ".php"))
 	fmt.Println(utils.Dirname("\\00\\testweb\\home.php"))
@@ -135,6 +141,7 @@ func main() {
 	fmt.Println(utils.Pathstring([]string{".", "data", "user"}))
 	utils.NewFile(".\\00\\22").File().WriteString("ggg")
 	fmt.Println(utils.DirExist(".\\00\\111"))
+	 */
 
 	/**
 	// Random

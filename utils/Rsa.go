@@ -23,7 +23,7 @@ var (
 
 func init() {
 	rsaOnce.Do(func() {
-		SecretContainer = make(MapString)
+		SecretContainer = Array()
 	})
 }
 
