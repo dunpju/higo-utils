@@ -42,6 +42,15 @@ type IMap interface {
 	String() string
 }
 
+type KeyValue struct {
+	Key   interface{}
+	Value interface{}
+}
+
+func NewKeyValue(key interface{}, value interface{}) *KeyValue {
+	return &KeyValue{Key: key, Value: value}
+}
+
 type ArrayMap struct {
 	sort  []string
 	value map[string]interface{}
@@ -74,7 +83,7 @@ func (this *ArrayMap) Shift() interface{} {
 		v := this.value[key]
 		this.sort = append(this.sort[:0], this.sort[0+1:]...)
 		delete(this.value, key)
-		return map[string]interface{}{key: v}
+		return NewKeyValue(key, v)
 	}
 	return nil
 }
@@ -86,7 +95,7 @@ func (this *ArrayMap) Pop() interface{} {
 		v := this.value[key]
 		this.sort = this.sort[:len(this.sort)-1]
 		delete(this.value, key)
-		return map[string]interface{}{key: v}
+		return NewKeyValue(key, v)
 	}
 	return nil
 }
@@ -95,7 +104,7 @@ func (this *ArrayMap) Current() interface{} {
 	if len(this.sort) > 0 {
 		key := this.sort[0]
 		v := this.value[key]
-		return map[string]interface{}{key: v}
+		return NewKeyValue(key, v)
 	}
 	return nil
 }
@@ -105,7 +114,7 @@ func (this *ArrayMap) End() interface{} {
 	if length > 0 {
 		key := this.sort[length-1]
 		v := this.value[key]
-		return map[string]interface{}{key: v}
+		return NewKeyValue(key, v)
 	}
 	return nil
 }
