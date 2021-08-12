@@ -40,6 +40,10 @@ type MapString map[string]interface{}
 
 type MapInt MapString
 
+func Array() MapString {
+	return make(MapString, 0)
+}
+
 func MapOperation(m MapString) MapString {
 	return m
 }
