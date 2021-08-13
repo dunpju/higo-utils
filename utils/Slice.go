@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"fmt"
 	"strings"
+	"sync"
 )
 
 type ISlice interface {
@@ -23,6 +25,7 @@ type ISlice interface {
 }
 
 type SliceString struct {
+	lock  sync.Mutex
 	value []string
 }
 
@@ -35,7 +38,7 @@ func NewSliceString(src ...string) *SliceString {
 }
 
 func (this *SliceString) String() string {
-	return "[" + this.Join(" ") + "]"
+	return fmt.Sprintf("%s", this.value)
 }
 
 func (this *SliceString) Join(sep ...string) string {
@@ -47,12 +50,16 @@ func (this *SliceString) Join(sep ...string) string {
 }
 
 func (this *SliceString) Append(value interface{}) interface{} {
+	this.lock.Lock()
+	defer this.lock.Unlock()
 	this.value = append(this.value, value.(string))
 	return this
 }
 
 func (this *SliceString) Insert(index int, value interface{}) interface{} {
-	var tmp []string
+	this.lock.Lock()
+	defer this.lock.Unlock()
+	tmp := make([]string, 0)
 	tmp = append(tmp, this.value[index:]...)
 	this.value = append(this.value[0:index], value.(string))
 	this.value = append(this.value, tmp...)
@@ -60,6 +67,8 @@ func (this *SliceString) Insert(index int, value interface{}) interface{} {
 }
 
 func (this *SliceString) Remove(dist interface{}) interface{} {
+	this.lock.Lock()
+	defer this.lock.Unlock()
 	tmp := make([]string, 0)
 	this.ForEach(func(index int, value interface{}) {
 		if value.(string) != dist.(string) {
@@ -71,11 +80,15 @@ func (this *SliceString) Remove(dist interface{}) interface{} {
 }
 
 func (this *SliceString) Delete(index int) interface{} {
+	this.lock.Lock()
+	defer this.lock.Unlock()
 	this.value = append(this.value[:index], this.value[index+1:]...)
 	return this
 }
 
 func (this *SliceString) Replace(src, dist interface{}) interface{} {
+	this.lock.Lock()
+	defer this.lock.Unlock()
 	this.ForEach(func(index int, value interface{}) {
 		if value.(string) == src.(string) {
 			this.value[index] = dist.(string)
@@ -85,6 +98,8 @@ func (this *SliceString) Replace(src, dist interface{}) interface{} {
 }
 
 func (this *SliceString) Empty() {
+	this.lock.Lock()
+	defer this.lock.Unlock()
 	this.value = this.value[0:0]
 }
 
@@ -101,6 +116,8 @@ func (this *SliceString) ForEach(callable SliceCallable) {
 }
 
 func (this *SliceString) Reverse() {
+	this.lock.Lock()
+	defer this.lock.Unlock()
 	for i, j := 0, len(this.value)-1; i < j; i, j = i+1, j-1 {
 		this.value[i], this.value[j] = this.value[j], this.value[i]
 	}
@@ -116,6 +133,8 @@ func (this *SliceString) Exist(dist interface{}) bool {
 }
 
 func (this *SliceString) Set(value interface{}) interface{} {
+	this.lock.Lock()
+	defer this.lock.Unlock()
 	this.value = value.([]string)
 	return this
 }
@@ -125,6 +144,8 @@ func (this *SliceString) Value() interface{} {
 }
 
 func (this *SliceString) Clone(src *SliceString) interface{} {
+	this.lock.Lock()
+	defer this.lock.Unlock()
 	copy(this.value, src.value)
 	return this
 }

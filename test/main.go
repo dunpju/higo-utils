@@ -33,6 +33,12 @@ func main() {
 	fmt.Println(a)
 	a.Remove("1")
 	fmt.Println(a)
+	fmt.Println(a.Value())
+	s := make([]string, 0)
+	s = append(s, "1")
+	s = append(s, "2")
+	s = append(s, "3")
+	fmt.Println(fmt.Sprintf("%s", s))
 	/**
 	// Rsa
 	rsa := utils.NewRsa().SetBits(1024).Build()
