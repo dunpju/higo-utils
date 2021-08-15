@@ -62,7 +62,6 @@ func (this *ArrayMap) Push(value interface{}) IMap {
 	length := len(this.sort)
 	if _, ok := this.value[strconv.Itoa(length)]; ok {
 		length += 1
-		this.Replace(key, value)
 	}
 	this.Put(strconv.Itoa(length), value)
 	return this
