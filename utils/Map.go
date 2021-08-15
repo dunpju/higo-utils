@@ -57,7 +57,14 @@ func (this *ArrayMap) Put(key string, value interface{}) IMap {
 }
 
 func (this *ArrayMap) Push(value interface{}) IMap {
-	this.Put(strconv.Itoa(len(this.sort)), value)
+	this.lock.Lock()
+	defer this.lock.Unlock()
+	length := len(this.sort)
+	if _, ok := this.value[strconv.Itoa(length)]; ok {
+		length += 1
+		this.Replace(key, value)
+	}
+	this.Put(strconv.Itoa(length), value)
 	return this
 }
 
