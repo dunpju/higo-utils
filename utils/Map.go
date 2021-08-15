@@ -35,6 +35,7 @@ func NewKeyValue(key interface{}, value interface{}) *KeyValue {
 }
 
 type ArrayMap struct {
+	index int64
 	sort  []string
 	value map[string]interface{}
 	lock  sync.Mutex
@@ -53,17 +54,14 @@ func (this *ArrayMap) Put(key string, value interface{}) IMap {
 		this.value[key] = value
 		this.sort = append(this.sort, key)
 	}
+	this.index++
 	return this
 }
 
 func (this *ArrayMap) Push(value interface{}) IMap {
 	this.lock.Lock()
 	defer this.lock.Unlock()
-	length := len(this.sort)
-	if _, ok := this.value[strconv.Itoa(length)]; ok {
-		length += 1
-	}
-	this.Put(strconv.Itoa(length), value)
+	this.Put(strconv.FormatInt(this.index, 10), value)
 	return this
 }
 
