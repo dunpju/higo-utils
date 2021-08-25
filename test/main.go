@@ -6,6 +6,11 @@ import (
 )
 
 func main() {
+	f := utils.File{}
+	f.ForEach(func(line int, s string) {
+		fmt.Println(line, s)
+	})
+	return
 	/**
 	//map
 	fmt.Println(utils.Dir("./utils").Scan().Suffix("go").Get())

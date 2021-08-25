@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"reflect"
+	"strings"
 )
 
 //覆盖 os.O_WRONLY | os.O_TRUNC | os.O_CREATE
@@ -53,6 +54,21 @@ func (this *File) ReadAll() []byte {
 		panic(err)
 	}
 	return b
+}
+
+func (this *File) ReadAllString() string {
+	return string(this.ReadAll())
+}
+
+//行遍历
+func (this *File) ForEach(callable func(line int, s string)) {
+	allString := this.ReadAllString()
+	if "" != allString {
+		rows := strings.Split(allString, "\n")
+		for i, row := range rows {
+			callable(i, row)
+		}
+	}
 }
 
 func (this *File) ReadBlock(filePth string, bufSize int, hookFunc func([]byte)) error {
