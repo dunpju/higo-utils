@@ -6,10 +6,8 @@ import (
 )
 
 func main() {
-	f := utils.File{}
-	f.ForEach(func(line int, s string) {
-		fmt.Println(line, s)
-	})
+	d := utils.Dir("./test/yy/dd")
+	d.Create()
 	return
 	/**
 	//map

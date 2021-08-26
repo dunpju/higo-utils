@@ -33,6 +33,17 @@ func (this *Directory) Get() []string {
 	return this.list
 }
 
+// 创建目录
+func (this *Directory) Create() *Directory {
+	// 目录不存在，并创建
+	if _, err := os.Stat(this.path); os.IsNotExist(err) {
+		if err := os.MkdirAll(this.path, os.ModePerm); err != nil {
+			panic(err)
+		}
+	}
+	return this
+}
+
 // 扫描
 func (this *Directory) Scan() *Directory {
 	this.scan = true
