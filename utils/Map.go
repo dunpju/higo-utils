@@ -49,7 +49,7 @@ func (this *ArrayMap) Put(key string, value interface{}) IMap {
 	this.lock.Lock()
 	defer this.lock.Unlock()
 	if _, ok := this.value[key]; ok {
-		this.Replace(key, value)
+		this.replace(key, value)
 	} else {
 		this.value[key] = value
 		this.sort = append(this.sort, key)
@@ -114,6 +114,10 @@ func (this *ArrayMap) End() interface{} {
 func (this *ArrayMap) Replace(key string, value interface{}) bool {
 	this.lock.Lock()
 	defer this.lock.Unlock()
+	return this.replace(key, value)
+}
+
+func (this *ArrayMap) replace(key string, value interface{}) bool {
 	if _, ok := this.value[key]; ok {
 		this.value[key] = value
 	} else {
