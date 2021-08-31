@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"strings"
 )
 
 type Directory struct {
@@ -59,7 +60,7 @@ func scanner(p string, suffix string) []string {
 	var fileList []string
 	for _, file := range files {
 		if "*" != suffix {
-			if path.Ext(file.Name()) == "."+suffix {
+			if path.Ext(file.Name()) == "."+strings.Trim(suffix, ".") {
 				fileList = append(fileList, p+string(os.PathSeparator)+file.Name())
 			}
 		} else {
