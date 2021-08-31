@@ -34,6 +34,16 @@ func NewKeyValue(key interface{}, value interface{}) *KeyValue {
 	return &KeyValue{Key: key, Value: value}
 }
 
+type KeyValueDoc struct {
+	Key   interface{}
+	Value interface{}
+	Doc   string
+}
+
+func NewKeyValueDoc(key interface{}, value interface{}, doc string) *KeyValueDoc {
+	return &KeyValueDoc{Key: key, Value: value, Doc: doc}
+}
+
 type ArrayMap struct {
 	index int64
 	sort  []string
