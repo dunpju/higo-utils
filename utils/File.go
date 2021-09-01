@@ -12,7 +12,7 @@ import (
 
 //覆盖 os.O_WRONLY | os.O_TRUNC | os.O_CREATE
 //追加 os.O_APPEND
-var FileFlag = os.O_APPEND
+var fileFlag = os.O_APPEND
 
 // 自定义文件结构体
 type File struct {
@@ -187,4 +187,10 @@ func (this *File) Exist() bool {
 		return false
 	}
 	return true
+}
+
+// 文件是否存在
+func FileExist(name string) bool {
+	f := &File{Name: name}
+	return f.Exist()
 }
