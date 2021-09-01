@@ -116,7 +116,7 @@ func (this *TLS) Update() {
 	this.createOutDir()
 
 	// 判断创建时间
-	crtFile := NewFile(this.crt)
+	crtFile := NewFile(this.crt, os.O_APPEND, os.ModePerm)
 	if crtFile.Exist() {
 
 		createTimestamp := crtFile.CreateTimestamp()

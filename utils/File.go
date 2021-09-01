@@ -21,10 +21,10 @@ type File struct {
 }
 
 // 构造函数
-func NewFile(name string) *File {
+func NewFile(name string, flag int, perm os.FileMode) *File {
 	f := &File{Name: name}
 	if f.Exist() {
-		file, err := os.OpenFile(f.Name, FileFlag, modePerm)
+		file, err := os.OpenFile(f.Name, flag, perm)
 		if err != nil {
 			panic(err)
 		}
@@ -39,7 +39,7 @@ func NewFile(name string) *File {
 func ReadFile(name string) *File {
 	f := &File{Name: name}
 	if f.Exist() {
-		file, err := os.OpenFile(f.Name, FileFlag, modePerm)
+		file, err := os.Open(f.Name)
 		if err != nil {
 			panic(err)
 		}
