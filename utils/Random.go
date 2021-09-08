@@ -5,23 +5,28 @@ import (
 	"time"
 )
 
-type Random struct{}
+//随机者
+type Randomizer struct{}
 
 func init() {
 	rand.Seed(time.Now().Unix())
 }
 
-func NewRandom() *Random {
-	return &Random{}
+func NewRandom() *Randomizer {
+	return &Randomizer{}
+}
+
+func Random() *Randomizer {
+	return NewRandom()
 }
 
 // 随机0-86400
-func (this *Random) IntHour24ToSecond() int64 {
+func (this *Randomizer) IntHour24ToSecond() int64 {
 	return rand.Int63n(24 * 60 * 60) // 24小时换算成秒
 }
 
 // 随机字符串
-func (this *Random) String(length int) string {
+func (this *Randomizer) String(length int) string {
 	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/"
 	bytes := []byte(str)
 	result := []byte{}
@@ -34,11 +39,11 @@ func (this *Random) String(length int) string {
 
 // 随机字数字
 // max 最大数：eg 1000
-func (this *Random) Int(max int) int {
+func (this *Randomizer) Int(max int) int {
 	return rand.Intn(max) + 1
 }
 
-func (this *Random) BetweenInt(min int, max int) int {
+func (this *Randomizer) BetweenInt(min int, max int) int {
 	if min > max {
 		panic("min should not gte max")
 	}
@@ -50,11 +55,11 @@ again:
 	return n
 }
 
-func (this *Random) Int64(max int64) int64 {
+func (this *Randomizer) Int64(max int64) int64 {
 	return rand.Int63n(max) + 1
 }
 
-func (this *Random) BetweenInt64(min int64, max int64) int64 {
+func (this *Randomizer) BetweenInt64(min int64, max int64) int64 {
 	if min > max {
 		panic("min should not gte max")
 	}
