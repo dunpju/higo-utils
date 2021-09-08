@@ -1,6 +1,9 @@
 package utils
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 //转换为字符串切片
 func ConvStrSlice(s []interface{}) (ret []string) {
@@ -16,4 +19,13 @@ func ConvStrSlice(s []interface{}) (ret []string) {
 		}
 	}
 	return
+}
+
+//结构体转json
+func ToJson(struc interface{}) string {
+	mjson, err := json.Marshal(struc)
+	if err != nil {
+		panic(err)
+	}
+	return string(mjson)
 }
