@@ -6,12 +6,12 @@ import (
 )
 
 type Test struct {
-	A string `json:"a"`
+	a string `json:"a"`
 	B int `json:"b"`
 }
 
 func main() {
-	t := Test{A: "a", B: 2}
+	t := Test{a: "a", B: 2}
 	fmt.Println(utils.ToMap(t))
 	return
 	/**

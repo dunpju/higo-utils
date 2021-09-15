@@ -135,22 +135,26 @@ func ToMap(obj interface{}) map[string]interface{} {
 		v := objValue.Elem()
 		typeOfType := v.Type()
 		for i := 0; i < v.NumField(); i++ {
-			field := v.Field(i)
-			jsonTag := typeOfType.Field(i).Tag.Get("json")
-			if jsonTag != "" {
-				meta[jsonTag] = field.Interface()
-			} else {
-				meta[typeOfType.Field(i).Name] = field.Interface()
+			if v.CanInterface() {
+				field := v.Field(i)
+				jsonTag := typeOfType.Field(i).Tag.Get("json")
+				if jsonTag != "" {
+					meta[jsonTag] = field.Interface()
+				} else {
+					meta[typeOfType.Field(i).Name] = field.Interface()
+				}
 			}
 		}
 	} else {
 		typeOfType := reflect.TypeOf(obj)
 		for i := 0; i < typeOfType.NumField(); i++ {
-			jsonTag := typeOfType.Field(i).Tag.Get("json")
-			if jsonTag != "" {
-				meta[jsonTag] = objValue.Field(i).Interface()
-			} else {
-				meta[typeOfType.Field(i).Name] = objValue.Field(i).Interface()
+			if objValue.Field(i).CanInterface() {
+				jsonTag := typeOfType.Field(i).Tag.Get("json")
+				if jsonTag != "" {
+					meta[jsonTag] = objValue.Field(i).Interface()
+				} else {
+					meta[typeOfType.Field(i).Name] = objValue.Field(i).Interface()
+				}
 			}
 		}
 	}
