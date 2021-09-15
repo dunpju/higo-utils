@@ -5,9 +5,14 @@ import (
 	"github.com/dengpju/higo-utils/utils"
 )
 
+type Test struct {
+	A string `json:"a"`
+	B int `json:"b"`
+}
+
 func main() {
-	d := utils.Dir("./test/yy/dd")
-	d.Create()
+	t := Test{A: "a", B: 2}
+	fmt.Println(utils.ToMap(t))
 	return
 	/**
 	//map
@@ -27,7 +32,7 @@ func main() {
 	result.ForEach(func(key string, value interface{}) {
 		fmt.Println(key, value, "for")
 	})
-	 */
+	*/
 	a := utils.Array().Push("11").Push("22").Push("33")
 	fmt.Println(a)
 	fmt.Println(a.Current())
@@ -89,7 +94,7 @@ func main() {
 		fmt.Println(utils.SecretContainer.Get(rsa.Flag()).(*utils.Rsa).Flag())
 	}
 
-	 */
+	*/
 
 	/**
 	//Strtotime
@@ -140,6 +145,9 @@ func main() {
 
 	/**
 	// File
+	d := utils.Dir("./test/yy/dd")
+	d.Create()
+	return
 	fmt.Println(utils.Basename("testweb\\home.php", ".php"))
 	fmt.Println(utils.Dirname("\\00\\testweb\\home.php"))
 	fmt.Println(utils.Dirname("\\00\\11\\testweb"))
@@ -152,16 +160,16 @@ func main() {
 	fmt.Println(utils.Pathstring([]string{".", "data", "user"}))
 	utils.NewFile(".\\00\\22").File().WriteString("ggg")
 	fmt.Println(utils.DirExist(".\\00\\111"))
-	 */
+	*/
 
 	/**
 	// Random
-	fmt.Println(utils.NewRandom().Int(1000))
-	fmt.Println(utils.NewRandom().Int64(1000))
-	fmt.Println(utils.NewRandom().BetweenInt(800, 1000))
-	fmt.Println(utils.NewRandom().BetweenInt64(800, 1000))
+	fmt.Println(utils.Random().Int(1000))
+	fmt.Println(utils.Random().Int64(1000))
+	fmt.Println(utils.Random().BetweenInt(800, 1000))
+	fmt.Println(utils.Random().BetweenInt64(800, 1000))
 
-	 */
+	*/
 
 	/**
 	// Slice
@@ -223,7 +231,6 @@ func main() {
 		fmt.Println(index, value)
 	})
 
-	 */
-
+	*/
 
 }

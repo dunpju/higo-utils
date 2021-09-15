@@ -1,9 +1,11 @@
 package utils
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"os"
 	"path"
+	"reflect"
 	"strings"
 )
 
@@ -124,4 +126,72 @@ func Mkfile(filename string) *os.File {
 //path切片 -> string
 func Pathstring(paths []string) string {
 	return strings.Join(paths, pathSeparator)
+}
+
+func ToMap(obj interface{}) map[string]interface{} {
+	objValue := reflect.ValueOf(obj)
+	meta := make(map[string]interface{})
+	if objValue.Kind() == reflect.Ptr {
+		v := objValue.Elem()
+		typeOfType := v.Type()
+		for i := 0; i < v.NumField(); i++ {
+			field := v.Field(i)
+			jsonTag := typeOfType.Field(i).Tag.Get("json")
+			if jsonTag != "" {
+				meta[jsonTag] = field.Interface()
+			} else {
+				meta[typeOfType.Field(i).Name] = field.Interface()
+			}
+		}
+	} else {
+		typeOfType := reflect.TypeOf(obj)
+		for i := 0; i < typeOfType.NumField(); i++ {
+			jsonTag := typeOfType.Field(i).Tag.Get("json")
+			if jsonTag != "" {
+				meta[jsonTag] = objValue.Field(i).Interface()
+			} else {
+				meta[typeOfType.Field(i).Name] = objValue.Field(i).Interface()
+			}
+		}
+	}
+	return meta
+}
+
+func JsonDecode(str string) (meta map[string]interface{}) {
+	if err := json.Unmarshal([]byte(str), &meta); err != nil {
+		panic(err)
+	}
+	return
+}
+
+func JsonEncode(meta interface{}) string {
+	return ToJson(meta)
+}
+
+func Isset() {
+
+}
+
+func InArray() {
+
+}
+
+func ArrayFilter() {
+
+}
+
+func ArrayUnique() {
+
+}
+
+func ArrayColumn(array, column string) {
+
+}
+
+func ArrayCombine(keys, values []string) {
+
+}
+
+func Strpos() {
+
 }
