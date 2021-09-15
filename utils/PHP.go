@@ -135,8 +135,8 @@ func ToMap(obj interface{}) map[string]interface{} {
 		v := objValue.Elem()
 		typeOfType := v.Type()
 		for i := 0; i < v.NumField(); i++ {
-			if v.CanInterface() {
-				field := v.Field(i)
+			field := v.Field(i)
+			if field.CanInterface() {
 				jsonTag := typeOfType.Field(i).Tag.Get("json")
 				if jsonTag != "" {
 					meta[jsonTag] = field.Interface()

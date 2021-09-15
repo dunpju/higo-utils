@@ -11,7 +11,7 @@ type Test struct {
 }
 
 func main() {
-	t := Test{a: "a", B: 2}
+	t := &Test{a: "a", B: 2}
 	fmt.Println(utils.ToMap(t))
 	return
 	/**
