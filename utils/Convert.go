@@ -32,6 +32,18 @@ func ToJson(struc interface{}) string {
 	return string(mjson)
 }
 
+//json key 转下划线
+func JsonKeyToCase(str string) string {
+	re, err := regexp.Compile(`("[a-zA-Z]*?":)`)
+	if nil != err {
+		panic(err)
+	}
+	pregReplace := re.ReplaceAllFunc([]byte(str), func(bytes []byte) []byte {
+		return []byte(`"` + CamelToCase(strings.Replace(string(bytes), `"`, "", 1)))
+	})
+	return string(pregReplace)
+}
+
 //json key 转小驼峰
 func JsonKeyToLcCamel(str string) string {
 	re, err := regexp.Compile(`("[_a-zA-Z]*?":)`)
