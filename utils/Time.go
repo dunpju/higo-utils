@@ -2,6 +2,7 @@ package utils
 
 import (
 	"regexp"
+	"strings"
 	"time"
 )
 
@@ -30,7 +31,29 @@ const (
 	year       = "year"
 )
 
-// 转时间,格式：Y-m-d H:i:s
+func GmtTime(gmt string) int64 {
+	if ok, err := regexp.Match(`\d+T\d+:`, []byte(gmt)); !ok || err != nil {
+		if !ok {
+			panic("format error")
+		}
+		if err != nil {
+			panic(err)
+		}
+	}
+	if ok, err := regexp.Match(`\+08:00$`, []byte(gmt)); !ok || err != nil {
+		if !ok {
+			panic("format error")
+		}
+		if err != nil {
+			panic(err)
+		}
+	}
+	gmt = strings.Replace(gmt, "T", " ", 1)
+	gmt = strings.Replace(gmt, "+08:00", "", 1)
+	return Strtotime(gmt)
+}
+
+// 时间戳转时间字符串,格式：Y-m-d H:i:s
 func Date(ts int64, format ...string) string {
 	f := timeLayout
 	if len(format) > 0 {
@@ -88,7 +111,7 @@ func Strtotime(datetime string, baseTimestamp ...int64) int64 {
 						add = - add
 					}
 				} else if day == match[3] {
-					add = time.Hour * time.Duration(24 * Int64(match[2]))
+					add = time.Hour * time.Duration(24*Int64(match[2]))
 					if minus == match[1] {
 						add = - add
 					}
