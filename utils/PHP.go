@@ -220,3 +220,77 @@ func ArrayCombine(obj interface{}, key, value string) map[string]interface{} {
 func Strpos() {
 
 }
+
+func Min(value interface{}) (min interface{}) {
+	if i, ok := value.([]int); ok {
+		m := i[0]
+		for j := 1; j < len(i); j++ {
+			if m > i[j] {
+				m = i[j]
+			}
+		}
+		min = m
+	} else if i64, ok := value.([]int64); ok {
+		m := i64[0]
+		for j := 1; j < len(i64); j++ {
+			if m > i64[j] {
+				m = i64[j]
+			}
+		}
+		min = m
+	} else if f, ok := value.([]float32); ok {
+		m := f[0]
+		for j := 1; j < len(f); j++ {
+			if m > f[j] {
+				m = f[j]
+			}
+		}
+		min = m
+	} else if f64, ok := value.([]float64); ok {
+		m := f64[0]
+		for j := 1; j < len(f64); j++ {
+			if m > f64[j] {
+				m = f64[j]
+			}
+		}
+		min = m
+	}
+	return
+}
+
+func Max(value interface{}) (max interface{}) {
+	if i, ok := value.([]int); ok {
+		m := i[0]
+		for j := 1; j < len(i); j++ {
+			if m < i[j] {
+				m = i[j]
+			}
+		}
+		max = m
+	} else if i64, ok := value.([]int64); ok {
+		m := i64[0]
+		for j := 1; j < len(i64); j++ {
+			if m < i64[j] {
+				m = i64[j]
+			}
+		}
+		max = m
+	} else if f, ok := value.([]float32); ok {
+		m := f[0]
+		for j := 1; j < len(f); j++ {
+			if m < f[j] {
+				m = f[j]
+			}
+		}
+		max = m
+	} else if f64, ok := value.([]float64); ok {
+		m := f64[0]
+		for j := 1; j < len(f64); j++ {
+			if m < f64[j] {
+				m = f64[j]
+			}
+		}
+		max = m
+	}
+	return
+}
