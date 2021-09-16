@@ -21,8 +21,33 @@ func ConvStrSlice(payload interface{}) (ret []string) {
 		for _, v := range i64 {
 			ret = append(ret, Int64String(v))
 		}
+	} else if f, ok := payload.([]float32); ok {
+		for _, v := range f {
+			ret = append(ret, FloatString(v))
+		}
+	} else if f64, ok := payload.([]float64); ok {
+		for _, v := range f64 {
+			ret = append(ret, Float64String(v))
+		}
 	} else {
-		panic(fmt.Errorf("Unsupported types, Only support string or int or int64"))
+		panic(fmt.Errorf("Unsupported types, Only support string or int/int64 or float32/float64"))
+	}
+	return
+}
+
+func ConvString(payload interface{}) (ret string) {
+	if s, ok := payload.(string); ok {
+		ret = s
+	} else if i, ok := payload.(int); ok {
+		ret = IntString(i)
+	} else if i64, ok := payload.(int64); ok {
+		ret = Int64String(i64)
+	} else if f, ok := payload.(float32); ok {
+		ret = FloatString(f)
+	} else if f64, ok := payload.(float64); ok {
+		ret = Float64String(f64)
+	} else {
+		panic(fmt.Errorf("Unsupported types, Only support string or int/int64 or float32/float64"))
 	}
 	return
 }

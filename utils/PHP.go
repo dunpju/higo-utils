@@ -212,7 +212,7 @@ func ArrayCombine(obj interface{}, key, value string) map[string]interface{} {
 		if !ok {
 			panic("There is no value")
 		}
-		ret[k.(string)] = v
+		ret[ConvString(k)] = v
 	}
 	return ret
 }

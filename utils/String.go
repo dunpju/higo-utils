@@ -41,6 +41,14 @@ func Int64String(i int64) string {
 	return strconv.FormatInt(i, 10)
 }
 
+func FloatString(f float32) string {
+	return strconv.FormatFloat(float64(f), 'E', -1, 32)
+}
+
+func Float64String(f64 float64) string {
+	return strconv.FormatFloat(f64, 'E', -1, 64)
+}
+
 // 首字母大写
 func Ucfirst(str string) string {
 	for i, v := range str {
