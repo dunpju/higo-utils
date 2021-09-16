@@ -80,7 +80,7 @@ func Mkdir(dirname string, perm ...os.FileMode) bool {
 
 //删除目录
 func Rmdir(dirname string) bool {
-	err := os.RemoveAll(dirname);
+	err := os.RemoveAll(dirname)
 	if err != nil {
 		panic(err)
 	}
@@ -104,7 +104,7 @@ func Emdir(dirname string) bool {
 
 //删除文件
 func Remove(filename string) bool {
-	err := os.Remove(filename);
+	err := os.Remove(filename)
 	if err != nil {
 		panic(err)
 	}
@@ -192,8 +192,29 @@ func ArrayColumn(array, column string) {
 
 }
 
-func ArrayCombine(keys, values []string) {
-
+func ArrayCombine(obj interface{}, key, value string) map[string]interface{} {
+	js, err := json.Marshal(obj)
+	if err != nil {
+		panic(err)
+	}
+	array := make([]map[string]interface{}, 0)
+	err = json.Unmarshal(js, &array)
+	if err != nil {
+		panic(err)
+	}
+	ret := make(map[string]interface{})
+	for _, m := range array {
+		k, ok := m[key]
+		if !ok {
+			panic("There is no key")
+		}
+		v, ok := m[value]
+		if !ok {
+			panic("There is no value")
+		}
+		ret[k.(string)] = v
+	}
+	return ret
 }
 
 func Strpos() {
