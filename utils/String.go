@@ -42,11 +42,11 @@ func Int64String(i int64) string {
 }
 
 func FloatString(f float32) string {
-	return strconv.FormatFloat(float64(f), 'E', -1, 32)
+	return strconv.FormatFloat(float64(f), 'f', -1, 32)
 }
 
 func Float64String(f64 float64) string {
-	return strconv.FormatFloat(f64, 'E', -1, 64)
+	return strconv.FormatFloat(f64, 'f', -1, 64)
 }
 
 // 首字母大写
