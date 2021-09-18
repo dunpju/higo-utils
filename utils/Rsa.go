@@ -44,164 +44,164 @@ func (this BytesString) Base64Decode() Bytes {
 }
 
 type Rsa struct {
-	pubkey         []byte
-	prikey         []byte
-	pubFile        string
-	priFile        string
-	bits           int
-	flag           string
-	expired        int64
-	x509PrivateKey []byte
-	privateKey     *rsa.PrivateKey
-	publicKey      *rsa.PublicKey
-	limen          int
-	counter        int
+	Pubkey         []byte          `json:"pubkey"`
+	Prikey         []byte          `json:"prikey"`
+	PubFile        string          `json:"pubfile"`
+	PriFile        string          `json:"prifile"`
+	Bits           int             `json:"bits"`
+	Flag           string          `json:"flag"`
+	Expired        int64           `json:"expired"`
+	X509PrivateKey []byte          `json:"x_509_private_key"`
+	PrivateKey     *rsa.PrivateKey `json:"private_key"`
+	PublicKey      *rsa.PublicKey  `json:"public_key"`
+	Limen          int             `json:"limen"`
+	Counter        int             `json:"counter"`
 }
 
 func NewRsa() *Rsa {
 	return &Rsa{}
 }
 
-func (this *Rsa) Counter() int {
-	return this.counter
+func (this *Rsa) GetCounter() int {
+	return this.Counter
 }
 
 func (this *Rsa) SetCounter(counter int) *Rsa {
-	this.counter = counter
+	this.Counter = counter
 	return this
 }
 
 func (this *Rsa) IncCounter(counter int) *Rsa {
-	this.counter += counter
+	this.Counter += counter
 	return this
 }
 
-func (this *Rsa) Limen() int {
-	return this.limen
+func (this *Rsa) GetLimen() int {
+	return this.Limen
 }
 
 func (this *Rsa) SetLimen(limen int) *Rsa {
-	this.limen = limen
+	this.Limen = limen
 	return this
 }
 
-func (this *Rsa) PublicKey() *rsa.PublicKey {
-	return this.publicKey
+func (this *Rsa) GetPublicKey() *rsa.PublicKey {
+	return this.PublicKey
 }
 
 func (this *Rsa) SetPublicKey(publicKey *rsa.PublicKey) *Rsa {
-	this.publicKey = publicKey
+	this.PublicKey = publicKey
 	return this
 }
 
-func (this *Rsa) PrivateKey() *rsa.PrivateKey {
-	return this.privateKey
+func (this *Rsa) GetPrivateKey() *rsa.PrivateKey {
+	return this.PrivateKey
 }
 
 func (this *Rsa) SetPrivateKey(privateKey *rsa.PrivateKey) *Rsa {
-	this.privateKey = privateKey
+	this.PrivateKey = privateKey
 	return this
 }
 
-func (this *Rsa) X509PrivateKey() []byte {
-	return this.x509PrivateKey
+func (this *Rsa) GetX509PrivateKey() []byte {
+	return this.X509PrivateKey
 }
 
 func (this *Rsa) SetX509PrivateKey(x509PrivateKey []byte) *Rsa {
-	this.x509PrivateKey = x509PrivateKey
+	this.X509PrivateKey = x509PrivateKey
 	return this
 }
 
-func (this *Rsa) Expired() int64 {
-	return this.expired
+func (this *Rsa) GetExpired() int64 {
+	return this.Expired
 }
 
 func (this *Rsa) SetExpired(expired int64) *Rsa {
-	this.expired = expired
+	this.Expired = expired
 	return this
 }
 
-func (this *Rsa) Bits() int {
-	return this.bits
+func (this *Rsa) GetBits() int {
+	return this.Bits
 }
 
 func (this *Rsa) SetBits(bits int) *Rsa {
-	this.bits = bits
+	this.Bits = bits
 	return this
 }
 
-func (this *Rsa) Flag() string {
-	return this.flag
+func (this *Rsa) GetFlag() string {
+	return this.Flag
 }
 
 func (this *Rsa) SetFlag(flag string) *Rsa {
-	this.flag = flag
+	this.Flag = flag
 	return this
 }
 
-func (this *Rsa) PriFile() string {
-	return this.priFile
+func (this *Rsa) GetPriFile() string {
+	return this.PriFile
 }
 
 func (this *Rsa) SetPriFile(priFile string) *Rsa {
-	this.priFile = priFile
+	this.PriFile = priFile
 	return this
 }
 
-func (this *Rsa) PubFile() string {
-	return this.pubFile
+func (this *Rsa) GetPubFile() string {
+	return this.PubFile
 }
 
 func (this *Rsa) SetPubFile(pubFile string) *Rsa {
-	this.pubFile = pubFile
+	this.PubFile = pubFile
 	return this
 }
 
-func (this *Rsa) Prikey() []byte {
-	return this.prikey
+func (this *Rsa) GetPrikey() []byte {
+	return this.Prikey
 }
 
 func (this *Rsa) SetPrikey(prikey []byte) *Rsa {
-	this.prikey = prikey
+	this.Prikey = prikey
 	return this
 }
 
-func (this *Rsa) Pubkey() []byte {
-	return this.pubkey
+func (this *Rsa) GetPubkey() []byte {
+	return this.Pubkey
 }
 
 func (this *Rsa) SetPubkey(pubkey []byte) *Rsa {
-	this.pubkey = pubkey
+	this.Pubkey = pubkey
 	return this
 }
 
 func (this *Rsa) Build() *Rsa {
 	//GenerateKey函数使用随机数据生成器random生成一对具有指定字位数的RSA密钥
 	//Reader是一个全局、共享的密码用强随机数生成器
-	privateKey, err := rsa.GenerateKey(rand.Reader, this.bits)
+	privateKey, err := rsa.GenerateKey(rand.Reader, this.Bits)
 	if err != nil {
 		panic(err)
 	}
-	this.privateKey = privateKey
+	this.PrivateKey = privateKey
 	//保存私钥
 	//通过x509标准将得到的ras私钥序列化为ASN.1 的 DER编码字符串
-	this.x509PrivateKey = x509.MarshalPKCS1PrivateKey(this.privateKey)
+	this.X509PrivateKey = x509.MarshalPKCS1PrivateKey(this.PrivateKey)
 
 	//使用pem格式对x509输出的内容进行编码
 	bufferPrivate := new(bytes.Buffer)
 	//构建一个pem.Block结构体对象
-	privateBlock := pem.Block{Type: "RSA PRIVATE KEY", Bytes: this.x509PrivateKey}
+	privateBlock := pem.Block{Type: "RSA PRIVATE KEY", Bytes: this.X509PrivateKey}
 	// 生成私钥
 	err = pem.Encode(bufferPrivate, &privateBlock)
 	if err != nil {
 		panic("Private Key build fail")
 	}
 	// 保存字私钥字符串
-	this.prikey = bufferPrivate.Bytes()
+	this.Prikey = bufferPrivate.Bytes()
 
 	//生成公钥
 	//获取公钥的数据
-	publicKey := this.privateKey.PublicKey
+	publicKey := this.PrivateKey.PublicKey
 	//X509对公钥编码
 	X509PublicKey, err := x509.MarshalPKIXPublicKey(&publicKey)
 	if err != nil {
@@ -218,38 +218,38 @@ func (this *Rsa) Build() *Rsa {
 	if err != nil {
 		panic("Public Key extract fail")
 	}
-	this.pubkey = bufferPublic.Bytes()
+	this.Pubkey = bufferPublic.Bytes()
 
-	if "" == this.flag {
-		this.flag = strconv.FormatInt(time.Now().Unix(), 10)
+	if "" == this.Flag {
+		this.Flag = strconv.FormatInt(time.Now().Unix(), 10)
 	}
 
 	//放入容器
-	SecretContainer.Put(this.flag, this)
+	SecretContainer.Put(this.Flag, this)
 
 	return this
 }
 
 func (this *Rsa) Output() {
 	//创建文件保存私钥
-	privateFile, err := os.Create(this.priFile) // private.pem
+	privateFile, err := os.Create(this.PriFile) // private.pem
 	if err != nil {
 		panic(err)
 	}
 	defer privateFile.Close()
-	_, err = privateFile.WriteString(string(this.prikey))
+	_, err = privateFile.WriteString(string(this.Prikey))
 	if err != nil {
 		panic(err)
 	}
 
 	//pem格式编码
 	//创建用于保存公钥的文件
-	publicFile, err := os.Create(this.pubFile) //public.pem
+	publicFile, err := os.Create(this.PubFile) //public.pem
 	if err != nil {
 		panic(err)
 	}
 	defer publicFile.Close()
-	_, err = publicFile.WriteString(string(this.pubkey))
+	_, err = publicFile.WriteString(string(this.Pubkey))
 	if err != nil {
 		panic(err)
 	}
@@ -348,7 +348,7 @@ func publicDecrypt(pub *rsa.PublicKey, hash crypto.Hash, hashed []byte, sig []by
 func PriEncrypt(r *Rsa, data []byte) Bytes {
 	//计数
 	r.IncCounter(1)
-	signData, err := rsa.SignPKCS1v15(nil, r.PrivateKey(), crypto.Hash(0), data)
+	signData, err := rsa.SignPKCS1v15(nil, r.GetPrivateKey(), crypto.Hash(0), data)
 	if err != nil {
 		panic(err)
 	}
@@ -359,7 +359,7 @@ func PriEncrypt(r *Rsa, data []byte) Bytes {
 func PubDecrypt(r *Rsa, data []byte) Bytes {
 	//计数
 	r.IncCounter(1)
-	decData, err := publicDecrypt(r.PublicKey(), crypto.Hash(0), nil, data)
+	decData, err := publicDecrypt(r.GetPublicKey(), crypto.Hash(0), nil, data)
 	if err != nil {
 		print(err)
 	}
@@ -371,7 +371,7 @@ func PubEncrypt(r *Rsa, plainText []byte) Bytes {
 	//计数
 	r.IncCounter(1)
 	//pem解码
-	block, _ := pem.Decode(r.pubkey)
+	block, _ := pem.Decode(r.Pubkey)
 	//x509解码
 	publicKeyInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
@@ -393,7 +393,7 @@ func PriDecrypt(r *Rsa, cipherText []byte) Bytes {
 	//计数
 	r.IncCounter(1)
 	//pem解码
-	block, _ := pem.Decode(r.Prikey())
+	block, _ := pem.Decode(r.GetPrikey())
 	//X509解码
 	privateKey, er := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if er != nil {
@@ -412,9 +412,9 @@ func PriDecrypt(r *Rsa, cipherText []byte) Bytes {
 func SecretExpiredClear() {
 	SecretContainer.ForEach(func(key string, value interface{}) {
 		r := value.(*Rsa)
-		if r.Expired() > 0 && Time() >= r.Expired() {
+		if r.GetExpired() > 0 && Time() >= r.GetExpired() {
 			SecretContainer.Remove(key)
-		} else if r.Limen() > 0 && r.Counter() >= r.Limen() {
+		} else if r.GetLimen() > 0 && r.GetCounter() >= r.GetLimen() {
 			SecretContainer.Remove(key)
 		}
 	})
