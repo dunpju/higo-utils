@@ -46,7 +46,9 @@ func ConvString(payload interface{}) (ret string) {
 		ret = FloatString(f)
 	} else if f64, ok := payload.(float64); ok {
 		ret = Float64String(f64)
-	} else {
+	} else if bytes, ok := payload.([]byte); ok {
+		ret = string(bytes)
+	}else {
 		panic(fmt.Errorf("Unsupported types, Only support string or int/int64 or float32/float64"))
 	}
 	return
