@@ -86,7 +86,7 @@ func (this *File) ForEach(callable func(line int, s string)) {
 	}
 }
 
-func (this *File) ReadBlock(filePth string, bufSize int, hookFunc func([]byte)) error {
+func (this *File) ReadBlock(bufSize int, hookFunc func([]byte)) error {
 	defer this.Close()
 	buf := make([]byte, bufSize) //一次读取多少个字节
 	bfRd := bufio.NewReader(this.file)
