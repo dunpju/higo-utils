@@ -7,22 +7,32 @@ import (
 	"io/ioutil"
 	"os"
 	"reflect"
-	"strings"
 )
 
 //覆盖 os.O_WRONLY | os.O_TRUNC | os.O_CREATE
 //追加 os.O_APPEND
 var fileFlag = os.O_APPEND
 
+type Filer interface {
+	File() *os.File
+	Path() string
+}
+
 // 自定义文件结构体
 type File struct {
-	Name string //文件名(完整路径)
-	file *os.File
+	Name    string //文件名(完整路径)
+	file    *os.File
+	isClose bool
+}
+
+func (this *File) SetClose(is bool) *File {
+	this.isClose = is
+	return this
 }
 
 // 构造函数
 func NewFile(name string, flag int, perm os.FileMode) *File {
-	f := &File{Name: name}
+	f := &File{Name: name, isClose: true}
 	if f.Exist() {
 		file, err := os.OpenFile(f.Name, flag, perm)
 		if err != nil {
@@ -37,7 +47,7 @@ func NewFile(name string, flag int, perm os.FileMode) *File {
 
 // 读取文件
 func ReadFile(name string) *File {
-	f := &File{Name: name}
+	f := &File{Name: name, isClose: true}
 	if f.Exist() {
 		file, err := os.Open(f.Name)
 		if err != nil {
@@ -82,14 +92,17 @@ func (this *File) ReadAllString() string {
 }
 
 //行遍历
-func (this *File) ForEach(callable func(line int, s string)) {
-	allString := this.ReadAllString()
-	if "" != allString {
-		rows := strings.Split(allString, "\n")
-		for i, row := range rows {
-			callable(i, row)
-		}
+func (this *File) ForEach(callable func(line int, b []byte)) error {
+	defer this.Close()
+	// Splits on newlines by default.
+	scanner := bufio.NewScanner(this.file)
+	l := 1
+	// https://golang.org/pkg/bufio/#Scanner.Scan
+	for scanner.Scan() {
+		callable(l, scanner.Bytes())
+		l++
 	}
+	return scanner.Err()
 }
 
 //块读取
@@ -100,7 +113,6 @@ func (this *File) ReadBlock(bufSize int, hookFunc func([]byte)) error {
 	for {
 		n, err := bfRd.Read(buf)
 		hookFunc(buf[:n]) // n 是成功读取字节数
-
 		if err != nil { //遇到任何错误立即返回，并忽略 EOF 错误信息
 			if err == io.EOF {
 				return nil
@@ -112,11 +124,14 @@ func (this *File) ReadBlock(bufSize int, hookFunc func([]byte)) error {
 
 // 关闭文件句柄
 func (this *File) Close() bool {
-	err := this.file.Close()
-	if err != nil {
-		panic(err)
+	if this.isClose {
+		err := this.file.Close()
+		if err != nil {
+			panic(err)
+		}
+		return true
 	}
-	return true
+	return false
 }
 
 // 删除
