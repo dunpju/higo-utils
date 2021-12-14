@@ -61,6 +61,11 @@ func (this *File) File() *os.File {
 	return this.file
 }
 
+//写文件
+func (this *File) Write(b []byte) (n int, err error) {
+	return this.file.Write(b)
+}
+
 //读取所有
 func (this *File) ReadAll() []byte {
 	defer this.Close()
@@ -71,6 +76,7 @@ func (this *File) ReadAll() []byte {
 	return b
 }
 
+//读取所有文件字符串
 func (this *File) ReadAllString() string {
 	return string(this.ReadAll())
 }
@@ -86,6 +92,7 @@ func (this *File) ForEach(callable func(line int, s string)) {
 	}
 }
 
+//块读取
 func (this *File) ReadBlock(bufSize int, hookFunc func([]byte)) error {
 	defer this.Close()
 	buf := make([]byte, bufSize) //一次读取多少个字节
