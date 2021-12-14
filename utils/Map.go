@@ -178,7 +178,7 @@ func (this *ArrayMap) Get(key string) interface{} {
 	if value, ok := this.value[key]; ok {
 		return value
 	} else {
-		panic("`" + key + "` The key doesn't exist in the map")
+		return nil
 	}
 }
 
