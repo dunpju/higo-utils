@@ -20,9 +20,10 @@ type Filer interface {
 
 // 自定义文件结构体
 type File struct {
-	Name    string //文件名(完整路径)
-	file    *os.File
-	isClose bool
+	Name      string //文件名(完整路径)
+	SplitFunc bufio.SplitFunc
+	file      *os.File
+	isClose   bool
 }
 
 func (this *File) SetClose(is bool) *File {
@@ -96,6 +97,9 @@ func (this *File) ForEach(callable func(line int, b []byte)) error {
 	defer this.Close()
 	// Splits on newlines by default.
 	scanner := bufio.NewScanner(this.file)
+	if this.SplitFunc != nil {
+		scanner.Split(this.SplitFunc)
+	}
 	l := 1
 	// https://golang.org/pkg/bufio/#Scanner.Scan
 	for scanner.Scan() {
