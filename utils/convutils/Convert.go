@@ -143,3 +143,45 @@ func BytesToInt32LittleEndian(b []byte) (int32, error) {
 	}
 	return x, nil
 }
+
+//大端序整形转换成字节
+func Int64ToBytesBigEndian(n int64) ([]byte, error) {
+	bytesBuffer := bytes.NewBuffer([]byte{})
+	err := binary.Write(bytesBuffer, binary.BigEndian, n)
+	if err != nil {
+		return nil, err
+	}
+	return bytesBuffer.Bytes(), nil
+}
+
+//大端序字节转换成整形
+func BytesToInt64BigEndian(b []byte) (int64, error) {
+	bytesBuffer := bytes.NewBuffer(b)
+	var x int64
+	err := binary.Read(bytesBuffer, binary.BigEndian, &x)
+	if err != nil {
+		return 0, err
+	}
+	return x, nil
+}
+
+//小端序整形转换成字节
+func Int64ToBytesLittleEndian(n int64) ([]byte, error) {
+	bytesBuffer := bytes.NewBuffer([]byte{})
+	err := binary.Write(bytesBuffer, binary.LittleEndian, n)
+	if err != nil {
+		return nil, err
+	}
+	return bytesBuffer.Bytes(), nil
+}
+
+//小端序字节转换成整形
+func BytesToInt64LittleEndian(b []byte) (int64, error) {
+	bytesBuffer := bytes.NewBuffer(b)
+	var x int64
+	err := binary.Read(bytesBuffer, binary.LittleEndian, &x)
+	if err != nil {
+		return 0, err
+	}
+	return x, nil
+}
