@@ -115,8 +115,23 @@ func (this *File) ForEach(callable func(line int, b []byte)) error {
 	return scanner.Err()
 }
 
+//扫描
+func (this *File) Scan(callable func(scanner *bufio.Scanner)) {
+	defer this.Close()
+	// Splits on newlines by default.
+	scanner := bufio.NewScanner(this.file)
+	if this.MaxBuffer > 0 {
+		buf := make([]byte, this.MaxBuffer)
+		scanner.Buffer(buf, this.MaxBuffer)
+	}
+	if this.SplitFunc != nil {
+		scanner.Split(this.SplitFunc)
+	}
+	callable(scanner)
+}
+
 //扫描者
-func (this *File) Scanner(callable func(line int, b []byte)) *bufio.Scanner {
+func (this *File) Scanner() *bufio.Scanner {
 	// Splits on newlines by default.
 	scanner := bufio.NewScanner(this.file)
 	if this.MaxBuffer > 0 {
