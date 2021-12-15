@@ -1,8 +1,9 @@
-package utils
+package fileutils
 
 import (
 	"bufio"
 	"fmt"
+	"github.com/dengpju/higo-utils/utils"
 	"io"
 	"io/ioutil"
 	"os"
@@ -22,6 +23,7 @@ type Filer interface {
 type File struct {
 	Name      string //文件名(完整路径)
 	SplitFunc bufio.SplitFunc
+	MaxBuffer int
 	file      *os.File
 	isClose   bool
 }
@@ -63,7 +65,7 @@ func ReadFile(name string) *File {
 
 // 创建
 func (this *File) Create() *File {
-	this.file = Mkfile(this.Name)
+	this.file = utils.Mkfile(this.Name)
 	return this
 }
 
@@ -93,11 +95,14 @@ func (this *File) ReadAllString() string {
 }
 
 //行遍历
-// Deprecated: Please use the
 func (this *File) ForEach(callable func(line int, b []byte)) error {
 	defer this.Close()
 	// Splits on newlines by default.
 	scanner := bufio.NewScanner(this.file)
+	if this.MaxBuffer > 0 {
+		buf := make([]byte, this.MaxBuffer)
+		scanner.Buffer(buf, this.MaxBuffer)
+	}
 	if this.SplitFunc != nil {
 		scanner.Split(this.SplitFunc)
 	}
@@ -141,7 +146,7 @@ func (this *File) Close() bool {
 
 // 删除
 func (this *File) Remove() *File {
-	Remove(this.Name)
+	utils.Remove(this.Name)
 	return this
 }
 
@@ -155,7 +160,7 @@ func (this *File) CreateTimestamp() int64 {
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
 		lowDateTime := t.Elem().FieldByName("CreationTime").FieldByName("LowDateTime").Uint()
 		highDateTime := t.Elem().FieldByName("CreationTime").FieldByName("HighDateTime").Uint()
-		return Nanoseconds(uint32(lowDateTime), uint32(highDateTime)) / 1e9
+		return utils.Nanoseconds(uint32(lowDateTime), uint32(highDateTime)) / 1e9
 	}
 	return int64(t.Elem().FieldByName("Ctim").FieldByName("Sec").Int())
 }
@@ -170,7 +175,7 @@ func (this *File) ModifyTimestamp() int64 {
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
 		lowDateTime := t.Elem().FieldByName("LastWriteTime").FieldByName("LowDateTime").Uint()
 		highDateTime := t.Elem().FieldByName("LastWriteTime").FieldByName("HighDateTime").Uint()
-		return Nanoseconds(uint32(lowDateTime), uint32(highDateTime)) / 1e9
+		return utils.Nanoseconds(uint32(lowDateTime), uint32(highDateTime)) / 1e9
 	}
 	return int64(t.Elem().FieldByName("Mtim").FieldByName("Sec").Int())
 }
@@ -185,7 +190,7 @@ func (this *File) AccessTimestamp() int64 {
 	if "syscall.Win32FileAttributeData" == fmt.Sprintf("%s", t.Elem().Type()) {
 		lowDateTime := t.Elem().FieldByName("LastAccessTime").FieldByName("LowDateTime").Uint()
 		highDateTime := t.Elem().FieldByName("LastAccessTime").FieldByName("HighDateTime").Uint()
-		return Nanoseconds(uint32(lowDateTime), uint32(highDateTime)) / 1e9
+		return utils.Nanoseconds(uint32(lowDateTime), uint32(highDateTime)) / 1e9
 	}
 	return int64(t.Elem().FieldByName("Atim").FieldByName("Sec").Int())
 }
@@ -193,19 +198,19 @@ func (this *File) AccessTimestamp() int64 {
 // 获取文件创建时间
 func (this *File) CreateTime() string {
 	timestamp := this.CreateTimestamp()
-	return Date(timestamp)
+	return utils.Date(timestamp)
 }
 
 // 获取文件更新时间
 func (this *File) ModifyTime() string {
 	timestamp := this.ModifyTimestamp()
-	return Date(timestamp)
+	return utils.Date(timestamp)
 }
 
 // 获取文件访问时间
 func (this *File) AccessTime() string {
 	timestamp := this.AccessTimestamp()
-	return Date(timestamp)
+	return utils.Date(timestamp)
 }
 
 // 文件是否存在
@@ -214,6 +219,15 @@ func (this *File) Exist() bool {
 		return false
 	}
 	return true
+}
+
+// 文件大小
+func (this *File) Size() (int64, error) {
+	f, err := os.Stat(this.Name)
+	if err != nil {
+		return 0, err
+	}
+	return f.Size(), nil
 }
 
 // 文件是否存在

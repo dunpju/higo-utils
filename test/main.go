@@ -150,10 +150,12 @@ func main() {
 
 	*/
 
-
 	// File
-f := &utils.File{Name: "fff"}
-fmt.Println(f.SplitFunc == nil)
+	f := &utils.File{Name: "fff"}
+	_ = f.ForEach(func(line int, b []byte) {
+
+	})
+	fmt.Println(f.SplitFunc == nil)
 	/**
 	d := utils.Dir("./test/yy/dd")
 	d.Create()
