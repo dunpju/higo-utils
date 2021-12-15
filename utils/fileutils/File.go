@@ -94,7 +94,7 @@ func (this *File) ReadAllString() string {
 	return string(this.ReadAll())
 }
 
-//行遍历
+//遍历
 func (this *File) ForEach(callable func(line int, b []byte)) error {
 	defer this.Close()
 	// Splits on newlines by default.
@@ -113,6 +113,20 @@ func (this *File) ForEach(callable func(line int, b []byte)) error {
 		l++
 	}
 	return scanner.Err()
+}
+
+//扫描者
+func (this *File) Scanner(callable func(line int, b []byte)) *bufio.Scanner {
+	// Splits on newlines by default.
+	scanner := bufio.NewScanner(this.file)
+	if this.MaxBuffer > 0 {
+		buf := make([]byte, this.MaxBuffer)
+		scanner.Buffer(buf, this.MaxBuffer)
+	}
+	if this.SplitFunc != nil {
+		scanner.Split(this.SplitFunc)
+	}
+	return scanner
 }
 
 //块读取
