@@ -3,6 +3,7 @@ package phputil
 import (
 	"encoding/json"
 	"github.com/dengpju/higo-utils/utils/convutil"
+	"github.com/dengpju/higo-utils/utils/dirutil"
 	"github.com/dengpju/higo-utils/utils/ufuncutil"
 	"io/ioutil"
 	"os"
@@ -11,36 +12,13 @@ import (
 	"strings"
 )
 
-var (
-	pathSeparator = string(os.PathSeparator)
-	modePerm      = os.ModePerm
-)
-
-func PathSeparator() string {
-	return pathSeparator
-}
-
-func SetPathSeparator(sep string) string {
-	pathSeparator = sep
-	return pathSeparator
-}
-
-func ModePerm() os.FileMode {
-	return modePerm
-}
-
-func SetModePerm(mode os.FileMode) os.FileMode {
-	modePerm = mode
-	return modePerm
-}
-
 //path文件名
 func Basename(path string, suffix ...string) string {
 	suff := ""
 	if len(suffix) > 0 {
 		suff = suffix[0]
 	}
-	paths := strings.Split(path, pathSeparator)
+	paths := strings.Split(path, dirutil.PathSeparator())
 	name := ufuncutil.IfStringIndex(paths[len(paths)-1:], 0)
 	if suff != "" {
 		names := strings.Split(name, ".")
@@ -50,20 +28,20 @@ func Basename(path string, suffix ...string) string {
 }
 
 func Dirname(path string) string {
-	paths := strings.Split(path, pathSeparator)
+	paths := strings.Split(path, dirutil.PathSeparator())
 	paths = paths[:len(paths)-1]
-	return strings.Join(paths, pathSeparator)
+	return strings.Join(paths, dirutil.PathSeparator())
 }
 
 func DirBasename(path string) string {
-	paths := strings.Split(path, pathSeparator)
+	paths := strings.Split(path, dirutil.PathSeparator())
 	paths = paths[len(paths)-2 : len(paths)-1]
-	return strings.Join(paths, pathSeparator)
+	return strings.Join(paths, dirutil.PathSeparator())
 }
 
 //目录path切片
 func Dirslice(path string) []string {
-	paths := strings.Split(path, pathSeparator)
+	paths := strings.Split(path, dirutil.PathSeparator())
 	return paths[:len(paths)-1]
 }
 
@@ -82,16 +60,16 @@ func DirExist(dirname string) bool {
 //创建目录
 func Mkdir(dirname string, perm ...os.FileMode) bool {
 	if len(perm) > 0 {
-		modePerm = perm[0]
+		dirutil.SetModePerm(perm[0])
 	}
 	var dir []string
 	for _, p := range Dirslice(dirname) {
 		dir = append(dir, p)
-		tmpPath := strings.Join(dir, pathSeparator)
+		tmpPath := strings.Join(dir, dirutil.PathSeparator())
 		if _, err := os.Stat(tmpPath); err != nil {
 			if os.IsNotExist(err) {
 				if tmpPath != "" {
-					if err := os.Mkdir(tmpPath, modePerm); err != nil {
+					if err := os.Mkdir(tmpPath, dirutil.ModePerm()); err != nil {
 						panic(err)
 					}
 				}
@@ -150,7 +128,7 @@ func Mkfile(filename string) *os.File {
 
 //path切片 -> string
 func Pathstring(paths []string) string {
-	return strings.Join(paths, pathSeparator)
+	return strings.Join(paths, dirutil.PathSeparator())
 }
 
 func ToMap(obj interface{}) map[string]interface{} {
