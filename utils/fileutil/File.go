@@ -3,7 +3,7 @@ package fileutil
 import (
 	"bufio"
 	"fmt"
-	"github.com/dengpju/higo-utils/utils/phputil"
+	"github.com/dengpju/higo-utils/utils/dirutil"
 	"github.com/dengpju/higo-utils/utils/timeutil"
 	"io"
 	"io/ioutil"
@@ -66,7 +66,7 @@ func ReadFile(name string) *File {
 
 // 创建
 func (this *File) Create() *File {
-	this.file = phputil.Mkfile(this.Name)
+	this.file = dirutil.Mkfile(this.Name)
 	return this
 }
 
@@ -176,7 +176,7 @@ func (this *File) Close() bool {
 
 // 删除
 func (this *File) Remove() *File {
-	phputil.Remove(this.Name)
+	dirutil.Remove(this.Name)
 	return this
 }
 
