@@ -1,4 +1,4 @@
-package tlsutils
+package tlsutil
 
 import (
 	"crypto/rand"
@@ -7,8 +7,9 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"fmt"
-	"github.com/dengpju/higo-utils/utils"
-	"github.com/dengpju/higo-utils/utils/fileutils"
+	"github.com/dengpju/higo-utils/utils/fileutil"
+	"github.com/dengpju/higo-utils/utils/randomutil"
+	"github.com/dengpju/higo-utils/utils/timeutil"
 	"math/big"
 	"net"
 	"os"
@@ -116,10 +117,10 @@ func (this *TLS) Update() {
 	// 创建输出目录
 	this.createOutDir()
 	// 判断创建时间
-	crtFile := fileutils.NewFile(this.crt, os.O_APPEND, os.ModePerm)
+	crtFile := fileutil.NewFile(this.crt, os.O_APPEND, os.ModePerm)
 	if crtFile.Exist() {
 		createTimestamp := crtFile.CreateTimestamp()
-		if (utils.Time() - createTimestamp) > utils.Random().IntHour24ToSecond() {
+		if (timeutil.Time() - createTimestamp) > randomutil.Random().IntHour24ToSecond() {
 			this.Build() // 重新生成证书
 		}
 	}

@@ -1,10 +1,11 @@
-package utils
+package convutil
 
 import (
 	"bytes"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"github.com/dengpju/higo-utils/utils/stringutil"
 	"regexp"
 	"strings"
 )
@@ -17,19 +18,19 @@ func ConvStrSlice(payload interface{}) (ret []string) {
 		}
 	} else if i, ok := payload.([]int); ok {
 		for _, v := range i {
-			ret = append(ret, IntString(v))
+			ret = append(ret, stringutil.IntString(v))
 		}
 	} else if i64, ok := payload.([]int64); ok {
 		for _, v := range i64 {
-			ret = append(ret, Int64String(v))
+			ret = append(ret, stringutil.Int64String(v))
 		}
 	} else if f, ok := payload.([]float32); ok {
 		for _, v := range f {
-			ret = append(ret, FloatString(v))
+			ret = append(ret, stringutil.FloatString(v))
 		}
 	} else if f64, ok := payload.([]float64); ok {
 		for _, v := range f64 {
-			ret = append(ret, Float64String(v))
+			ret = append(ret, stringutil.Float64String(v))
 		}
 	} else {
 		panic(fmt.Errorf("Unsupported types, Only support string or int/int64 or float32/float64"))
@@ -41,13 +42,13 @@ func ConvString(payload interface{}) (ret string) {
 	if s, ok := payload.(string); ok {
 		ret = s
 	} else if i, ok := payload.(int); ok {
-		ret = IntString(i)
+		ret = stringutil.IntString(i)
 	} else if i64, ok := payload.(int64); ok {
-		ret = Int64String(i64)
+		ret = stringutil.Int64String(i64)
 	} else if f, ok := payload.(float32); ok {
-		ret = FloatString(f)
+		ret = stringutil.FloatString(f)
 	} else if f64, ok := payload.(float64); ok {
-		ret = Float64String(f64)
+		ret = stringutil.Float64String(f64)
 	} else if bytes, ok := payload.([]byte); ok {
 		ret = string(bytes)
 	} else {
@@ -72,7 +73,7 @@ func JsonKeyToCase(str string) string {
 		panic(err)
 	}
 	pregReplace := re.ReplaceAllFunc([]byte(str), func(bytes []byte) []byte {
-		return []byte(`"` + CamelToCase(strings.Replace(string(bytes), `"`, "", 1)))
+		return []byte(`"` + stringutil.CamelToCase(strings.Replace(string(bytes), `"`, "", 1)))
 	})
 	return string(pregReplace)
 }
@@ -84,7 +85,7 @@ func JsonKeyToLcCamel(str string) string {
 		panic(err)
 	}
 	pregReplace := re.ReplaceAllFunc([]byte(str), func(bytes []byte) []byte {
-		return []byte(`"` + Lcfirst(strings.Replace(CaseToCamel(string(bytes)), `"`, "", 1)))
+		return []byte(`"` + stringutil.Lcfirst(strings.Replace(stringutil.CaseToCamel(string(bytes)), `"`, "", 1)))
 	})
 	return string(pregReplace)
 }
@@ -96,12 +97,12 @@ func JsonKeyToCamel(str string) string {
 		panic(err)
 	}
 	pregReplace := re.ReplaceAllFunc([]byte(str), func(bytes []byte) []byte {
-		return []byte(CaseToCamel(string(bytes)))
+		return []byte(stringutil.CaseToCamel(string(bytes)))
 	})
 	return string(pregReplace)
 }
 
-//整形转换成字节
+//大端序整形转换成字节
 func Int32ToBytesBigEndian(n int32) ([]byte, error) {
 	bytesBuffer := bytes.NewBuffer([]byte{})
 	err := binary.Write(bytesBuffer, binary.BigEndian, n)
@@ -111,11 +112,74 @@ func Int32ToBytesBigEndian(n int32) ([]byte, error) {
 	return bytesBuffer.Bytes(), nil
 }
 
-//字节转换成整形
+//大端序字节转换成整形
 func BytesToInt32BigEndian(b []byte) (int32, error) {
 	bytesBuffer := bytes.NewBuffer(b)
 	var x int32
 	err := binary.Read(bytesBuffer, binary.BigEndian, &x)
+	if err != nil {
+		return 0, err
+	}
+	return x, nil
+}
+
+//小端序整形转换成字节
+func Int32ToBytesLittleEndian(n int32) ([]byte, error) {
+	bytesBuffer := bytes.NewBuffer([]byte{})
+	err := binary.Write(bytesBuffer, binary.LittleEndian, n)
+	if err != nil {
+		return nil, err
+	}
+	return bytesBuffer.Bytes(), nil
+}
+
+//小端序字节转换成整形
+func BytesToInt32LittleEndian(b []byte) (int32, error) {
+	bytesBuffer := bytes.NewBuffer(b)
+	var x int32
+	err := binary.Read(bytesBuffer, binary.LittleEndian, &x)
+	if err != nil {
+		return 0, err
+	}
+	return x, nil
+}
+
+//大端序整形转换成字节
+func Int64ToBytesBigEndian(n int64) ([]byte, error) {
+	bytesBuffer := bytes.NewBuffer([]byte{})
+	err := binary.Write(bytesBuffer, binary.BigEndian, n)
+	if err != nil {
+		return nil, err
+	}
+	return bytesBuffer.Bytes(), nil
+}
+
+//大端序字节转换成整形
+func BytesToInt64BigEndian(b []byte) (int64, error) {
+	bytesBuffer := bytes.NewBuffer(b)
+	var x int64
+	err := binary.Read(bytesBuffer, binary.BigEndian, &x)
+	if err != nil {
+		return 0, err
+	}
+	return x, nil
+}
+
+//小端序整形转换成字节
+func Int64ToBytesLittleEndian(n int64) ([]byte, error) {
+	bytesBuffer := bytes.NewBuffer([]byte{})
+	err := binary.Write(bytesBuffer, binary.LittleEndian, n)
+	if err != nil {
+		return nil, err
+	}
+	return bytesBuffer.Bytes(), nil
+}
+
+//小端序字节转换成整形
+func BytesToInt64LittleEndian(b []byte) (int64, error) {
+	bytesBuffer := bytes.NewBuffer(b)
+	var x int64
+	err := binary.Read(bytesBuffer, binary.LittleEndian, &x)
 	if err != nil {
 		return 0, err
 	}

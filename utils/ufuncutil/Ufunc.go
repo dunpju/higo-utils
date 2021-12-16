@@ -1,4 +1,4 @@
-package utils
+package ufuncutil
 
 // 三目运算
 func If(condition bool, a, b interface{}) interface{} {

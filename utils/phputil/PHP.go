@@ -1,13 +1,38 @@
-package utils
+package phputil
 
 import (
 	"encoding/json"
+	"github.com/dengpju/higo-utils/utils/convutil"
+	"github.com/dengpju/higo-utils/utils/ufuncutil"
 	"io/ioutil"
 	"os"
 	"path"
 	"reflect"
 	"strings"
 )
+
+var (
+	pathSeparator = string(os.PathSeparator)
+	modePerm      = os.ModePerm
+)
+
+func PathSeparator() string {
+	return pathSeparator
+}
+
+func SetPathSeparator(sep string) string {
+	pathSeparator = sep
+	return pathSeparator
+}
+
+func ModePerm() os.FileMode {
+	return modePerm
+}
+
+func SetModePerm(mode os.FileMode) os.FileMode {
+	modePerm = mode
+	return modePerm
+}
 
 //path文件名
 func Basename(path string, suffix ...string) string {
@@ -16,10 +41,10 @@ func Basename(path string, suffix ...string) string {
 		suff = suffix[0]
 	}
 	paths := strings.Split(path, pathSeparator)
-	name := IfStringIndex(paths[len(paths)-1:], 0)
+	name := ufuncutil.IfStringIndex(paths[len(paths)-1:], 0)
 	if suff != "" {
 		names := strings.Split(name, ".")
-		name = IfStringIndex(names, 0)
+		name = ufuncutil.IfStringIndex(names, 0)
 	}
 	return name
 }
@@ -169,7 +194,7 @@ func JsonDecode(str string) (meta map[string]interface{}) {
 }
 
 func JsonEncode(meta interface{}) string {
-	return ToJson(meta)
+	return convutil.ToJson(meta)
 }
 
 func Isset() {
@@ -212,7 +237,7 @@ func ArrayCombine(obj interface{}, key, value string) map[string]interface{} {
 		if !ok {
 			panic("There is no value")
 		}
-		ret[ConvString(k)] = v
+		ret[convutil.ConvString(k)] = v
 	}
 	return ret
 }

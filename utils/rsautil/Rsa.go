@@ -1,4 +1,4 @@
-package utils
+package rsautil
 
 import (
 	"bytes"
@@ -9,6 +9,9 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
+	"github.com/dengpju/higo-utils/utils/encodeutil"
+	"github.com/dengpju/higo-utils/utils/maputil"
+	"github.com/dengpju/higo-utils/utils/timeutil"
 	"math/big"
 	"os"
 	"strconv"
@@ -17,13 +20,13 @@ import (
 )
 
 var (
-	SecretContainer IMap
+	SecretContainer maputil.IMap
 	rsaOnce         sync.Once
 )
 
 func init() {
 	rsaOnce.Do(func() {
-		SecretContainer = Array()
+		SecretContainer = maputil.Array()
 	})
 }
 
@@ -34,13 +37,13 @@ func (this Bytes) String() BytesString {
 }
 
 func (this Bytes) Base64Encode() BytesString {
-	return BytesString(Base64Encode(this))
+	return BytesString(encodeutil.Base64Encode(this))
 }
 
 type BytesString string
 
 func (this BytesString) Base64Decode() Bytes {
-	return Base64Decode(string(this))
+	return encodeutil.Base64Decode(string(this))
 }
 
 type Rsa struct {
@@ -412,7 +415,7 @@ func PriDecrypt(r *Rsa, cipherText []byte) Bytes {
 func SecretExpiredClear() {
 	SecretContainer.ForEach(func(key string, value interface{}) {
 		r := value.(*Rsa)
-		if r.GetExpired() > 0 && Time() >= r.GetExpired() {
+		if r.GetExpired() > 0 && timeutil.Time() >= r.GetExpired() {
 			SecretContainer.Remove(key)
 		} else if r.GetLimen() > 0 && r.GetCounter() >= r.GetLimen() {
 			SecretContainer.Remove(key)

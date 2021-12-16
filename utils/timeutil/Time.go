@@ -1,6 +1,7 @@
-package utils
+package timeutil
 
 import (
+	"github.com/dengpju/higo-utils/utils/stringutil"
 	"regexp"
 	"strings"
 	"time"
@@ -101,22 +102,22 @@ func Strtotime(datetime string, baseTimestamp ...int64) int64 {
 			var add time.Duration
 			for _, match := range matchs {
 				if minute == match[3] {
-					add = time.Minute * time.Duration(Int64(match[2]))
+					add = time.Minute * time.Duration(stringutil.Int64(match[2]))
 					if minus == match[1] {
 						add = - add
 					}
 				} else if hour == match[3] {
-					add = time.Hour * time.Duration(Int64(match[2]))
+					add = time.Hour * time.Duration(stringutil.Int64(match[2]))
 					if minus == match[1] {
 						add = - add
 					}
 				} else if day == match[3] {
-					add = time.Hour * time.Duration(24*Int64(match[2]))
+					add = time.Hour * time.Duration(24*stringutil.Int64(match[2]))
 					if minus == match[1] {
 						add = - add
 					}
 				} else {
-					add = time.Second * time.Duration(Int64(match[2]))
+					add = time.Second * time.Duration(stringutil.Int64(match[2]))
 					if minus == match[1] {
 						add = - add
 					}

@@ -1,4 +1,4 @@
-package utils
+package gobutil
 
 import (
 	"encoding/gob"

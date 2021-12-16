@@ -1,4 +1,4 @@
-package utils
+package encodeutil
 
 import (
 	"crypto/md5"

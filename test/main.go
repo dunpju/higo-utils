@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/dengpju/higo-utils/utils/fileutils"
+	"github.com/dengpju/higo-utils/utils/fileutil"
 )
 
 type Test struct {
@@ -151,7 +151,7 @@ func main() {
 	*/
 
 	// File
-	f := &fileutils.File{Name: "fff"}
+	f := &fileutil.File{Name: "fff"}
 	_ = f.ForEach(func(line int, b []byte) {
 
 	})

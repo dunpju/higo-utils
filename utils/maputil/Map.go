@@ -1,4 +1,4 @@
-package utils
+package maputil
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package utils
+package tokenutil
 
 import (
 	"github.com/dgrijalva/jwt-go"
