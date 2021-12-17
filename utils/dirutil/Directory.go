@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"regexp"
 	"strings"
 )
 
@@ -127,6 +128,12 @@ func DirBasename(path string) string {
 //目录path切片
 func Dirslice(path string) []string {
 	paths := strings.Split(path, PathSeparator())
+	if len(paths) == 1 {
+		re := regexp.MustCompile("/")
+		if re.Match([]byte(paths[0])) {
+			paths = strings.Split(path, "/")
+		}
+	}
 	return paths[:len(paths)-1]
 }
 
