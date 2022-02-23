@@ -11,10 +11,12 @@ import (
 	"fmt"
 	"github.com/dengpju/higo-utils/utils/encodeutil"
 	"github.com/dengpju/higo-utils/utils/maputil"
+	"github.com/dengpju/higo-utils/utils/randomutil"
 	"github.com/dengpju/higo-utils/utils/timeutil"
 	"math/big"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -22,11 +24,30 @@ import (
 var (
 	SecretContainer maputil.IMap
 	rsaOnce         sync.Once
+	FlagDES         func(flag string) string
+	Perturb         func(rsa *Rsa) string
 )
 
 func init() {
 	rsaOnce.Do(func() {
 		SecretContainer = maputil.Array()
+		FlagDES = func(flag string) string {
+			return flag
+		}
+		Perturb = func(rsa *Rsa) string {
+			str := strings.Replace(string(rsa.GetPubkey()), "-----BEGIN PUBLIC KEY-----\n", "", 1)
+			str = strings.Replace(str, "-----END PUBLIC KEY-----\n", "", 1)
+			pubs := strings.Split(str, "\n")
+			rowLen := len(pubs[0])
+			newPubkey := make([]string, 0)
+			for _, v := range pubs {
+				newPubkey = append(newPubkey, v)
+				if len(v) == rowLen {
+					newPubkey = append(newPubkey, randomutil.Random().String(rowLen))
+				}
+			}
+			return strings.Join(newPubkey, "\n")
+		}
 	})
 }
 
@@ -226,7 +247,7 @@ func (this *Rsa) Build() *Rsa {
 	if "" == this.Flag {
 		this.Flag = strconv.FormatInt(time.Now().Unix(), 10)
 	}
-
+	this.Flag = FlagDES(this.Flag)
 	//放入容器
 	SecretContainer.Put(this.Flag, this)
 
@@ -256,6 +277,10 @@ func (this *Rsa) Output() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func (this *Rsa) Perturb() string {
+	return Perturb(this)
 }
 
 // copy from crypt/rsa/pkcs1v5.go
