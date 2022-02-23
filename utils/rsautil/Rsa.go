@@ -24,15 +24,15 @@ import (
 var (
 	SecretContainer maputil.IMap
 	rsaOnce         sync.Once
-	FlagDES         func(flag string) string
+	FlagDES         func(rsa *Rsa) string
 	Perturb         func(rsa *Rsa) string
 )
 
 func init() {
 	rsaOnce.Do(func() {
 		SecretContainer = maputil.Array()
-		FlagDES = func(flag string) string {
-			return flag
+		FlagDES = func(rsa *Rsa) string {
+			return rsa.Flag
 		}
 		Perturb = func(rsa *Rsa) string {
 			str := strings.Replace(string(rsa.GetPubkey()), "-----BEGIN PUBLIC KEY-----\n", "", 1)
@@ -247,7 +247,7 @@ func (this *Rsa) Build() *Rsa {
 	if "" == this.Flag {
 		this.Flag = strconv.FormatInt(time.Now().Unix(), 10)
 	}
-	this.Flag = FlagDES(this.Flag)
+	this.Flag = FlagDES(this)
 	//放入容器
 	SecretContainer.Put(this.Flag, this)
 
