@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/dengpju/higo-utils/utils/fileutil"
+	"os"
 )
 
 type Test struct {
@@ -151,6 +152,7 @@ func main() {
 	*/
 
 	// File
+	fileutil.NewFile("./etc/password", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	f := &fileutil.File{Name: "fff"}
 	_ = f.ForEach(func(line int, b []byte) {
 
