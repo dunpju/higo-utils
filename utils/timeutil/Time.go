@@ -9,6 +9,32 @@ import (
 
 var rege = regexp.MustCompile(pattern)
 
+type Timeutil struct {
+}
+
+func (this *Timeutil) Time() int64 {
+	return Time()
+}
+
+func (this *Timeutil) GmtTime(gmt string) int64 {
+	return GmtTime(gmt)
+}
+
+// 时间戳转时间字符串,格式：Y-m-d H:i:s
+func (this *Timeutil) Date(ts int64, format ...string) string {
+	return Date(ts, format...)
+}
+
+// 纳秒
+func (this *Timeutil) Nanoseconds(LowDateTime uint32, HighDateTime uint32) int64 {
+	return Nanoseconds(LowDateTime, HighDateTime)
+}
+
+//"-2day +1 hour +1 minute"
+func (this *Timeutil) Strtotime(datetime string, baseTimestamp ...int64) int64 {
+	return Strtotime(datetime, baseTimestamp...)
+}
+
 // 当前时间戳
 func Time() int64 {
 	return time.Now().Unix()

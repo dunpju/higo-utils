@@ -7,6 +7,58 @@ import (
 	"unicode"
 )
 
+type Stringutil struct {
+}
+
+// recover错误，转string
+func (this *Stringutil) Error(r interface{}) string {
+	return ErrorToString(r)
+}
+
+func (this *Stringutil) Int(str string) int {
+	return Int(str)
+}
+
+func (this *Stringutil) Int64(str string) int64 {
+	return Int64(str)
+}
+
+func (this *Stringutil) IntString(i int) string {
+	return IntString(i)
+}
+
+func (this *Stringutil) Int64String(i int64) string {
+	return Int64String(i)
+}
+
+func (this *Stringutil) FloatString(f float32) string {
+	return FloatString(f)
+}
+
+func (this *Stringutil) Float64String(f64 float64) string {
+	return Float64String(f64)
+}
+
+func (this *Stringutil) Ucfirst(str string) string {
+	return Ucfirst(str)
+}
+
+func (this *Stringutil) Lcfirst(str string) string {
+	return Lcfirst(str)
+}
+
+func (this *Stringutil) CamelToCase(name string) string {
+	return CamelToCase(name)
+}
+
+func (this *Stringutil) CaseToCamel(name string) string {
+	return CaseToCamel(name)
+}
+
+func (this *Stringutil) Buffer() *Buffer {
+	return NewBuffer()
+}
+
 // recover错误，转string
 func ErrorToString(r interface{}) string {
 	switch v := r.(type) {

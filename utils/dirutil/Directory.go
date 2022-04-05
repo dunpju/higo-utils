@@ -14,6 +14,81 @@ var (
 	modePerm      = os.ModePerm
 )
 
+type Dire struct{}
+
+func (this *Dire) Separator() string {
+	return PathSeparator()
+}
+
+func (this *Dire) SetSeparator(sep string) string {
+	return SetPathSeparator(sep)
+}
+
+func (this *Dire) ModePerm() os.FileMode {
+	return ModePerm()
+}
+
+func (this *Dire) SetModePerm(mode os.FileMode) os.FileMode {
+	return SetModePerm(mode)
+}
+
+func (this *Dire) Directory(path string) *Directory {
+	return &Directory{path: path, suffix: "*", scan: false}
+}
+
+//path文件名
+func (this *Dire) Basename(path string, suffix ...string) string {
+	return Basename(path, suffix...)
+}
+
+func (this *Dire) Dirname(path string) string {
+	return Dirname(path)
+}
+
+func (this *Dire) DirBasename(path string) string {
+	return DirBasename(path)
+}
+
+//目录path切片
+func (this *Dire) Dirslice(path string) []string {
+	return Dirslice(path)
+}
+
+// 目录是否存在
+func (this *Dire) DirExist(dirname string) bool {
+	return DirExist(dirname)
+}
+
+//创建目录
+func (this *Dire) Mkdir(dirname string, perm ...os.FileMode) bool {
+	return Mkdir(dirname, perm...)
+}
+
+//删除目录
+func (this *Dire) Rmdir(dirname string) bool {
+	return Rmdir(dirname)
+}
+
+//清空目录
+func (this *Dire) Emdir(dirname string) bool {
+	return Emdir(dirname)
+}
+
+//删除文件
+func (this *Dire) Remove(filename string) bool {
+	return Remove(filename)
+}
+
+// 创建文件
+func (this *Dire) Mkfile(filename string) *os.File {
+	return Mkfile(filename)
+}
+
+//path切片 -> string
+func (this *Dire) Pathstring(paths []string) string {
+	return Pathstring(paths)
+}
+
 func PathSeparator() string {
 	return pathSeparator
 }

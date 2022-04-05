@@ -25,6 +25,13 @@ var (
 	IP                 = "127.0.0.1"
 )
 
+type TLSutil struct {
+}
+
+func (this *TLSutil) New(outDir string, crt string, key string) *TLS {
+	return NewTLS(outDir, crt, key)
+}
+
 type TLS struct {
 	bits   int
 	outDir string

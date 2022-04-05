@@ -157,3 +157,14 @@ func ByteReverse(s []byte) []byte {
 	}
 	return s
 }
+
+type Sliceutil struct {
+}
+
+func (this *Sliceutil) New(src ...string) *SliceString {
+	return NewSliceString(src...)
+}
+
+func (this *Sliceutil) ByteReverse(s []byte) []byte {
+	return ByteReverse(s)
+}

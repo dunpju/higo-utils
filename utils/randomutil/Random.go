@@ -8,6 +8,10 @@ import (
 //随机者
 type Randomizer struct{}
 
+func (this *Randomizer) Random() *Randomizer {
+	return Random()
+}
+
 func init() {
 	rand.Seed(time.Now().Unix())
 }

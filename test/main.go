@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/dengpju/higo-utils/utils/fileutil"
-	"os"
+	"github.com/dengpju/higo-utils/utils"
 )
 
 type Test struct {
@@ -150,7 +149,7 @@ func main() {
 	}
 
 	*/
-
+	/**
 	// File
 	fileutil.NewFile("./etc/password", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	f := &fileutil.File{Name: "fff"}
@@ -158,6 +157,7 @@ func main() {
 
 	})
 	fmt.Println(f.SplitFunc == nil)
+	 */
 	/**
 	d := utils.Dir("./test/yy/dd")
 	d.Create()
@@ -246,5 +246,7 @@ func main() {
 	})
 
 	*/
-
+fmt.Println(utils.Convert.Slice([]int{1, 2, 3}))
+fmt.Println(utils.Convert.Slice([]int{1, 2, 3}))
+fmt.Printf("%T", utils.Convert.Slice([]int{1, 2, 3}))
 }

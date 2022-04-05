@@ -6,6 +6,21 @@ import (
 	"sync"
 )
 
+type Maputil struct {
+}
+
+func (this *Maputil) NewKeyValue(key interface{}, value interface{}) *KeyValue {
+	return NewKeyValue(key, value)
+}
+
+func (this *Maputil) NewKeyValueDoc(key interface{}, value interface{}, doc string) *KeyValueDoc {
+	return NewKeyValueDoc(key, value, doc)
+}
+
+func (this *Maputil) Array() *ArrayMap {
+	return Array()
+}
+
 type IMap interface {
 	Put(key string, value interface{}) IMap
 	Push(value interface{}) IMap

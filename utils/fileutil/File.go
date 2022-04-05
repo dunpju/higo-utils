@@ -15,6 +15,24 @@ import (
 //追加 os.O_APPEND
 var fileFlag = os.O_APPEND
 
+type Fileutil struct {
+}
+
+// 构造函数
+func (this *Fileutil) New(name string, flag int, perm os.FileMode) *File {
+	return NewFile(name, flag, perm)
+}
+
+// 读取文件
+func (this *Fileutil) ReadFile(name string) *File {
+	return ReadFile(name)
+}
+
+// 文件是否存在
+func (this *Fileutil) FileExist(name string) bool {
+	return FileExist(name)
+}
+
 type Filer interface {
 	File() *os.File
 	Path() string

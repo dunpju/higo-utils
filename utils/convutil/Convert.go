@@ -10,12 +10,81 @@ import (
 	"strings"
 )
 
+type Convert struct {
+}
+
 //转换为字符串切片
+func (this *Convert) Slice(payload interface{}) (ret []string) {
+	return ConvStrSlice(payload)
+}
+
+func (this *Convert) String(payload interface{}) (ret string) {
+	return ConvString(payload)
+}
+
+//结构体转json
+func (this *Convert) Json(struc interface{}) string {
+	return ToJson(struc)
+}
+
+//json key 转下划线
+func (this *Convert) JsonKeyToCase(str string) string {
+	return JsonKeyToCase(str)
+}
+
+//json key 转小驼峰
+func (this *Convert) JsonKeyToLcCamel(str string) string {
+	return JsonKeyToLcCamel(str)
+}
+
+//json key 转大驼峰
+func (this *Convert) JsonKeyToCamel(str string) string {
+	return JsonKeyToCamel(str)
+}
+
+//大端序整形转换成字节
+func (this *Convert) Int32ToBytesBigEndian(n int32) ([]byte, error) {
+	return Int32ToBytesBigEndian(n)
+}
+
+//大端序字节转换成整形
+func (this *Convert) BytesToInt32BigEndian(bs []byte) (int32, error) {
+	return BytesToInt32BigEndian(bs)
+}
+
+//小端序整形转换成字节
+func (this *Convert) Int32ToBytesLittleEndian(n int32) ([]byte, error) {
+	return Int32ToBytesLittleEndian(n)
+}
+
+//小端序字节转换成整形
+func (this *Convert) BytesToInt32LittleEndian(bs []byte) (int32, error) {
+	return BytesToInt32LittleEndian(bs)
+}
+
+//大端序整形转换成字节
+func (this *Convert) Int64ToBytesBigEndian(n int64) ([]byte, error) {
+	return Int64ToBytesBigEndian(n)
+}
+
+//大端序字节转换成整形
+func (this *Convert) BytesToInt64BigEndian(bs []byte) (int64, error) {
+	return BytesToInt64BigEndian(bs)
+}
+
+//小端序整形转换成字节
+func (this *Convert) Int64ToBytesLittleEndian(n int64) ([]byte, error) {
+	return Int64ToBytesLittleEndian(n)
+}
+
+//小端序字节转换成整形
+func (this *Convert) BytesToInt64LittleEndian(bs []byte) (int64, error) {
+	return BytesToInt64LittleEndian(bs)
+}
+
 func ConvStrSlice(payload interface{}) (ret []string) {
 	if s, ok := payload.([]string); ok {
-		for _, v := range s {
-			ret = append(ret, v)
-		}
+		ret = append(ret, s...)
 	} else if i, ok := payload.([]int); ok {
 		for _, v := range i {
 			ret = append(ret, stringutil.IntString(v))
@@ -49,8 +118,8 @@ func ConvString(payload interface{}) (ret string) {
 		ret = stringutil.FloatString(f)
 	} else if f64, ok := payload.(float64); ok {
 		ret = stringutil.Float64String(f64)
-	} else if bytes, ok := payload.([]byte); ok {
-		ret = string(bytes)
+	} else if bs, ok := payload.([]byte); ok {
+		ret = string(bs)
 	} else {
 		panic(fmt.Errorf("Unsupported types, Only support string or int/int64 or float32/float64"))
 	}

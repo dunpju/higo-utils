@@ -1,5 +1,28 @@
 package ufuncutil
 
+type Ufuncutil struct {
+}
+
+func (this *Ufuncutil) If(condition bool, a, b interface{}) interface{} {
+	return If(condition, a, b)
+}
+
+func (this *Ufuncutil) Ifindex(slice []interface{}, index int) interface{} {
+	return Ifindex(slice, index)
+}
+
+func (this *Ufuncutil) IfStringIndex(slice []string, index int) string {
+	return IfStringIndex(slice, index)
+}
+
+func (this *Ufuncutil) IfIntIndex(slice []int, index int) int {
+	return IfIntIndex(slice, index)
+}
+
+func (this *Ufuncutil) IfInt64Index(slice []int64, index int) int64 {
+	return IfInt64Index(slice, index)
+}
+
 // 三目运算
 func If(condition bool, a, b interface{}) interface{} {
 	if condition {

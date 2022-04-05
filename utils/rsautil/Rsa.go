@@ -447,3 +447,30 @@ func SecretExpiredClear() {
 		}
 	})
 }
+
+type Rsautil struct {
+}
+
+func (this *Rsautil) New() *Rsa {
+	return NewRsa()
+}
+
+func (this *Rsautil) PrivateEncrypt(r *Rsa, data []byte) Bytes {
+	return PriEncrypt(r, data)
+}
+
+func (this *Rsautil) PublicDecrypt(r *Rsa, data []byte) Bytes {
+	return PubDecrypt(r, data)
+}
+
+func (this *Rsautil) PublicEncrypt(r *Rsa, plainText []byte) Bytes {
+	return PubEncrypt(r, plainText)
+}
+
+func (this *Rsautil) PrivateDecrypt(r *Rsa, cipherText []byte) Bytes {
+	return PriDecrypt(r, cipherText)
+}
+
+func (this *Rsautil) SecretExpiredClear() {
+	SecretExpiredClear()
+}

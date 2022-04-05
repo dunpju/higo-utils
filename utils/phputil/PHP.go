@@ -6,6 +6,59 @@ import (
 	"reflect"
 )
 
+type PHP struct {
+}
+
+func (this *PHP) Map(obj interface{}) map[string]interface{} {
+	return ToMap(obj)
+}
+
+func (this *PHP) JsonDecode(str string) (meta map[string]interface{}) {
+	return JsonDecode(str)
+}
+
+func (this *PHP) JsonEncode(meta interface{}) string {
+	return JsonEncode(meta)
+}
+
+func (this *PHP) Isset() {
+
+}
+
+func (this *PHP) InArray() {
+
+}
+
+func (this *PHP) ArrayFilter() {
+
+}
+
+func (this *PHP) ArrayUnique() {
+
+}
+
+func (this *PHP) ArrayColumn(array, column string) {
+
+}
+
+func (this *PHP) ArrayCombine(obj interface{}, key, value string) map[string]interface{} {
+	return ArrayCombine(obj, key, value)
+}
+
+func (this *PHP) Strpos() {
+
+}
+
+func (this *PHP) Min(value interface{}) (min interface{}) {
+	min = Min(value)
+	return
+}
+
+func (this *PHP) Max(value interface{}) (max interface{}) {
+	max = Max(value)
+	return
+}
+
 func ToMap(obj interface{}) map[string]interface{} {
 	objValue := reflect.ValueOf(obj)
 	meta := make(map[string]interface{})
