@@ -140,6 +140,7 @@ func (this *Rsa) GetExpired() int64 {
 	return this.Expired
 }
 
+// timeutil.Time() + (3 * 60)
 func (this *Rsa) SetExpired(expired int64) *Rsa {
 	this.Expired = expired
 	return this
