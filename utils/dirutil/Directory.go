@@ -32,6 +32,14 @@ func (this *Dire) SetModePerm(mode os.FileMode) os.FileMode {
 	return SetModePerm(mode)
 }
 
+func (this *Dire) Open(dir string) *Directory {
+	return this.Directory(dir)
+}
+
+func (this *Dire) Read(dir string) *Directory {
+	return this.Directory(dir)
+}
+
 func (this *Dire) Directory(path string) *Directory {
 	return &Directory{path: path, suffix: "*", scan: false}
 }
@@ -55,7 +63,7 @@ func (this *Dire) Dirslice(path string) []string {
 }
 
 // 目录是否存在
-func (this *Dire) DirExist(dirname string) bool {
+func (this *Dire) Exist(dirname string) bool {
 	return DirExist(dirname)
 }
 
