@@ -275,7 +275,7 @@ func (this *File) IsDir() bool {
 	if e != nil {
 		return false
 	}
-	return !fi.IsDir()
+	return fi.IsDir()
 }
 
 // 文件大小
