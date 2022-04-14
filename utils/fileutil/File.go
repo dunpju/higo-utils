@@ -269,6 +269,15 @@ func (this *File) Exist() bool {
 	return true
 }
 
+// 文件是否是目录
+func (this *File) IsDir() bool {
+	fi, e := os.Stat(this.Name)
+	if e != nil {
+		return false
+	}
+	return !fi.IsDir()
+}
+
 // 文件大小
 func (this *File) Size() (int64, error) {
 	f, err := os.Stat(this.Name)
