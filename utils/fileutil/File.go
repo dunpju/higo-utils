@@ -28,6 +28,11 @@ func (this *Fileutil) ReadFile(name string) *File {
 	return ReadFile(name)
 }
 
+// 读取文件
+func (this *Fileutil) Read(name string) *File {
+	return ReadFile(name)
+}
+
 // 文件是否存在
 func (this *Fileutil) FileExist(name string) bool {
 	return FileExist(name)
