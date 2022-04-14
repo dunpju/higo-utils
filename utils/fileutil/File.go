@@ -24,17 +24,12 @@ func (this *Fileutil) New(name string, flag int, perm os.FileMode) *File {
 }
 
 // 读取文件
-func (this *Fileutil) ReadFile(name string) *File {
-	return ReadFile(name)
-}
-
-// 读取文件
 func (this *Fileutil) Read(name string) *File {
 	return ReadFile(name)
 }
 
 // 文件是否存在
-func (this *Fileutil) FileExist(name string) bool {
+func (this *Fileutil) Exist(name string) bool {
 	return FileExist(name)
 }
 
