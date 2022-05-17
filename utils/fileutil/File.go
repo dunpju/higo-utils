@@ -108,6 +108,15 @@ func (this *File) ReadAll() []byte {
 	return b
 }
 
+func (this *File) Bytes() []byte {
+	defer this.Close()
+	b, err := ioutil.ReadAll(this.file)
+	if err != nil {
+		panic(err)
+	}
+	return b
+}
+
 //读取所有文件字符串
 func (this *File) ReadAllString() string {
 	return string(this.ReadAll())
