@@ -123,7 +123,7 @@ func (this *File) ReadAllString() string {
 }
 
 //遍历
-func (this *File) ForEach(callable func(line int, b []byte)) error {
+func (this *File) ForEach(callable func(line int, b []byte) bool) error {
 	defer this.Close()
 	// Splits on newlines by default.
 	scanner := bufio.NewScanner(this.file)
@@ -137,7 +137,10 @@ func (this *File) ForEach(callable func(line int, b []byte)) error {
 	l := 1
 	// https://golang.org/pkg/bufio/#Scanner.Scan
 	for scanner.Scan() {
-		callable(l, scanner.Bytes())
+		b := callable(l, scanner.Bytes())
+		if !b {
+			break
+		}
 		l++
 	}
 	return scanner.Err()
