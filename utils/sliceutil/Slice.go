@@ -6,18 +6,18 @@ import (
 	"sync"
 )
 
-type ISlice interface {
-	Append(value interface{}) interface{}
-	Insert(index int, value interface{}) interface{}
-	Delete(index int) interface{}
-	Remove(dist interface{}) interface{}
-	Replace(src, dist interface{}) interface{}
+type ISlice[T any] interface {
+	Append(value T) T
+	Insert(index int, value T) T
+	Delete(index int) T
+	Remove(dist T) T
+	Replace(src, dist T) T
 	String() string
 	Join(sep ...string) string
-	Exist(value interface{}) bool
-	Clone(src *SliceString) interface{}
-	Set(value interface{}) interface{}
-	Value() interface{}
+	Exist(value T) bool
+	Clone(src *T) T
+	Set(value T) T
+	Value() T
 	ForEach(callable SliceCallable)
 	Len() int
 	Reverse()
@@ -49,50 +49,52 @@ func (this *SliceString) Join(sep ...string) string {
 	return strings.Join(this.value, s)
 }
 
-func (this *SliceString) Append(value interface{}) interface{} {
+func (this *SliceString) Append(value string) *SliceString {
 	this.lock.Lock()
 	defer this.lock.Unlock()
-	this.value = append(this.value, value.(string))
+	this.value = append(this.value, value)
 	return this
 }
 
-func (this *SliceString) Insert(index int, value interface{}) interface{} {
+func (this *SliceString) Insert(index int, value string) *SliceString {
 	this.lock.Lock()
 	defer this.lock.Unlock()
 	tmp := make([]string, 0)
 	tmp = append(tmp, this.value[index:]...)
-	this.value = append(this.value[0:index], value.(string))
+	this.value = append(this.value[0:index], value)
 	this.value = append(this.value, tmp...)
 	return this
 }
 
-func (this *SliceString) Remove(dist interface{}) interface{} {
+func (this *SliceString) Remove(dist string) *SliceString {
 	this.lock.Lock()
 	defer this.lock.Unlock()
 	tmp := make([]string, 0)
-	this.ForEach(func(index int, value interface{}) {
-		if value.(string) != dist.(string) {
+	this.ForEach(func(index int, value interface{}) bool {
+		if value.(string) != dist {
 			tmp = append(tmp, value.(string))
 		}
+		return true
 	})
 	this.value = tmp
 	return this
 }
 
-func (this *SliceString) Delete(index int) interface{} {
+func (this *SliceString) Delete(index int) *SliceString {
 	this.lock.Lock()
 	defer this.lock.Unlock()
 	this.value = append(this.value[:index], this.value[index+1:]...)
 	return this
 }
 
-func (this *SliceString) Replace(src, dist interface{}) interface{} {
+func (this *SliceString) Replace(src, dist string) *SliceString {
 	this.lock.Lock()
 	defer this.lock.Unlock()
-	this.ForEach(func(index int, value interface{}) {
-		if value.(string) == src.(string) {
-			this.value[index] = dist.(string)
+	this.ForEach(func(index int, value interface{}) bool {
+		if value.(string) == src {
+			this.value[index] = dist
 		}
+		return true
 	})
 	return this
 }
@@ -107,11 +109,13 @@ func (this *SliceString) Len() int {
 	return len(this.value)
 }
 
-type SliceCallable func(index int, value interface{})
+type SliceCallable func(index int, value interface{}) bool
 
 func (this *SliceString) ForEach(callable SliceCallable) {
 	for key, value := range this.value {
-		callable(key, value)
+		if !callable(key, value) {
+			break
+		}
 	}
 }
 
@@ -123,27 +127,27 @@ func (this *SliceString) Reverse() {
 	}
 }
 
-func (this *SliceString) Exist(dist interface{}) bool {
+func (this *SliceString) Exist(dist string) bool {
 	for _, value := range this.value {
-		if value == dist.(string) {
+		if value == dist {
 			return true
 		}
 	}
 	return false
 }
 
-func (this *SliceString) Set(value interface{}) interface{} {
+func (this *SliceString) Set(value []string) *SliceString {
 	this.lock.Lock()
 	defer this.lock.Unlock()
-	this.value = value.([]string)
+	this.value = value
 	return this
 }
 
-func (this *SliceString) Value() interface{} {
+func (this *SliceString) Value() []string {
 	return this.value
 }
 
-func (this *SliceString) Clone(src *SliceString) interface{} {
+func (this *SliceString) Clone(src *SliceString) *SliceString {
 	this.lock.Lock()
 	defer this.lock.Unlock()
 	copy(this.value, src.value)
