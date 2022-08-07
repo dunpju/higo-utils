@@ -4,29 +4,25 @@ import (
 	"fmt"
 	"github.com/dengpju/higo-utils/utils"
 	"log"
-	"strings"
 )
 
 type GenericLogger[T any] interface {
-	WithField(a T, b T) T
-	Info(T)
+	WithField(T, T) T
 }
 
-type MyLogger struct {
-	fields []string
+type MyLogger[T any] struct {
+	fields []T
 }
 
-func (m *MyLogger) WithField(k string, v string) *MyLogger {
-	m.fields = append(m.fields, k+"="+v)
+func (m *MyLogger[T]) WithField(k, v T) *MyLogger[T] {
+	m.fields = append(m.fields, k, v)
+	fmt.Println(m)
 	return m
 }
 
-func (m *MyLogger) Info(msg string) {
-	log.Printf("%s : %s", strings.Join(m.fields, ","), msg)
-}
-
 func DoStuff[T GenericLogger[T]](t T) {
-	//t.WithField("go", "1.18").Info("is awesome")
+	//t.WithField("go", "1.18")
+	//fmt.Println(t)
 }
 
 type MyIntLogger struct {
@@ -42,12 +38,49 @@ func (this *MyIntLogger) Info(s int) {
 	log.Printf("%d : %d ", this.fields, s)
 }
 
+type DataProcessor[T any] interface {
+	Process(oriData T) (newData T)
+	Save(data T) error
+}
+
+type DataProcessor2[T any] interface {
+	int | ~struct{ Data interface{} }
+
+	Process(data T) (newData T)
+	Save(data T) error
+}
+
+type CSVProcessor struct {
+}
+
+// 注意，方法中 oriData 等的类型是 string
+func (c *CSVProcessor) Process(oriData string) (newData string) {
+	return oriData
+}
+
+func (c *CSVProcessor) Save(oriData string) error {
+	return nil
+}
+
+func tt[T DataProcessor[string]](t T) {
+	t.Process("gg")
+}
+
 func Test_slice() {
+
+	csv := &CSVProcessor{}
+	csv.Process("ggg")
+	csv.Save("hhh")
+
 	// T
-	//sliceutil.DoStuff(&sliceutil.MyLogger{})
-	mylog := &MyLogger{}
-	mylog.WithField("ff", "hh").Info("hh")
-	(&MyIntLogger{}).WithField(1, 2).Info(3)
+	mylog := &MyLogger[int]{}
+	//mylog.WithField("ff", "hh").Info("hh")
+	//(&MyIntLogger{}).WithField(1, 2).Info(3)
+	//DoStuff(&MyLogger{})
+	mylog.WithField(10, 20)
+	(&MyLogger[string]{}).WithField("ff", "gg")
+	return
+	//DoStuff(&MyIntLogger{})
 
 	// Slice
 	sl := utils.Slice.New()
