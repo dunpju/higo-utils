@@ -1,4 +1,4 @@
-module github.com/dengpju/higo-utils
+module github.com/dunpju/higo-utils
 
 go 1.18
 

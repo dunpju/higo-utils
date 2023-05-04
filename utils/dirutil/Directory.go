@@ -1,7 +1,7 @@
 package dirutil
 
 import (
-	"github.com/dengpju/higo-utils/utils/ufuncutil"
+	"github.com/dunpju/higo-utils/utils/ufuncutil"
 	"io/ioutil"
 	"os"
 	"path"

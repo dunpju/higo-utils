@@ -1,6 +1,6 @@
 package main
 
-import "github.com/dengpju/higo-utils/test/Slice"
+import "github.com/dunpju/higo-utils/test/Slice"
 
 type Test struct {
 	a string `json:"a"`
