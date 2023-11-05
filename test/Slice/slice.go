@@ -2,7 +2,7 @@ package Slice
 
 import (
 	"fmt"
-	"github.com/dengpju/higo-utils/utils"
+	"github.com/dunpju/higo-utils/utils"
 	"log"
 )
 

@@ -3,8 +3,8 @@ package fileutil
 import (
 	"bufio"
 	"fmt"
-	"github.com/dengpju/higo-utils/utils/dirutil"
-	"github.com/dengpju/higo-utils/utils/timeutil"
+	"github.com/dunpju/higo-utils/utils/dirutil"
+	"github.com/dunpju/higo-utils/utils/timeutil"
 	"io"
 	"io/ioutil"
 	"os"
@@ -183,7 +183,7 @@ func (this *File) ReadBlock(bufSize int, hookFunc func([]byte)) error {
 	for {
 		n, err := bfRd.Read(buf)
 		hookFunc(buf[:n]) // n 是成功读取字节数
-		if err != nil { //遇到任何错误立即返回，并忽略 EOF 错误信息
+		if err != nil {   //遇到任何错误立即返回，并忽略 EOF 错误信息
 			if err == io.EOF {
 				return nil
 			}

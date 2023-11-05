@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/dengpju/higo-utils/utils/stringutil"
+	"github.com/dunpju/higo-utils/utils/stringutil"
 	"regexp"
 	"strings"
 )
