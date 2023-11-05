@@ -8,6 +8,7 @@ import (
 	"github.com/dengpju/higo-utils/utils/gobutil"
 	"github.com/dengpju/higo-utils/utils/hostutil"
 	"github.com/dengpju/higo-utils/utils/maputil"
+	"github.com/dengpju/higo-utils/utils/modutil"
 	"github.com/dengpju/higo-utils/utils/phputil"
 	"github.com/dengpju/higo-utils/utils/protoutil"
 	"github.com/dengpju/higo-utils/utils/randomutil"
@@ -40,6 +41,7 @@ var (
 	TLS     = &tls{}
 	Token   = &token{}
 	Ufunc   = &ufunc{}
+	Mod     = &mod{}
 )
 
 type convert struct{ convutil.Convert }
@@ -60,3 +62,4 @@ type timer struct{ timeutil.Timeutil }
 type tls struct{ tlsutil.TLSutil }
 type token struct{ tokenutil.Tokenutil }
 type ufunc struct{ ufuncutil.Ufuncutil }
+type mod struct{ modutil.Mod }
