@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/dunpju/higo-utils/utils"
+	"github.com/dunpju/higo-utils/utils/dirutil"
 	"os/exec"
 	"path/filepath"
 	"runtime/debug"
@@ -77,7 +78,7 @@ func GetModule() (string, error) {
 func GetGoModChildPath(targetPath string) []string {
 	childPath := make([]string, 0)
 begin:
-	abovePath := utils.Dir.Dirname(targetPath)
+	abovePath := dirutil.Dirname(targetPath)
 	files, err := filepath.Glob(targetPath + "/go.mod")
 	if err != nil {
 		panic(err)
