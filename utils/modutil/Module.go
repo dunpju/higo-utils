@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/dunpju/higo-utils/utils"
 	"github.com/dunpju/higo-utils/utils/dirutil"
 	"os/exec"
 	"path/filepath"
@@ -84,7 +83,7 @@ begin:
 		panic(err)
 	}
 	if len(files) == 0 {
-		path := []string{utils.Dir.Basename(targetPath)}
+		path := []string{dirutil.Basename(targetPath)}
 		childPath = append(path, childPath...)
 		targetPath = abovePath
 		goto begin
