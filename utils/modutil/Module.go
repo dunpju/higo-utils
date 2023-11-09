@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/dunpju/higo-utils/utils"
 	"os/exec"
+	"path/filepath"
 	"runtime/debug"
 )
 
@@ -16,6 +18,10 @@ func (this *Mod) GetModInfo() *GoMod {
 
 func (this *Mod) GetModule() (string, error) {
 	return GetModule()
+}
+
+func (this *Mod) GetGoModChildPath(targetPath string) []string {
+	return GetGoModChildPath(targetPath)
 }
 
 func GetModInfo() *GoMod {
@@ -65,4 +71,22 @@ func GetModule() (string, error) {
 		}
 	}
 	return "", fmt.Errorf("not found devel module")
+}
+
+// GetGoModChildPath 获取子路径
+func GetGoModChildPath(targetPath string) []string {
+	childPath := make([]string, 0)
+begin:
+	abovePath := utils.Dir.Dirname(targetPath)
+	files, err := filepath.Glob(targetPath + "/go.mod")
+	if err != nil {
+		panic(err)
+	}
+	if len(files) == 0 {
+		path := []string{utils.Dir.Basename(targetPath)}
+		childPath = append(path, childPath...)
+		targetPath = abovePath
+		goto begin
+	}
+	return childPath
 }
