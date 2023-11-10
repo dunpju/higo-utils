@@ -62,7 +62,7 @@ type Require struct {
 // GetModule 获取模块名称
 func GetModule() (string, error) {
 	info, ok := debug.ReadBuildInfo()
-	if ok {
+	if !ok {
 		return "", fmt.Errorf("not read build info")
 	}
 	for _, dep := range info.Deps {
