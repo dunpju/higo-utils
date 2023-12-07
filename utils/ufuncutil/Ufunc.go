@@ -23,7 +23,7 @@ func (this *Ufuncutil) IfInt64Index(slice []int64, index int) int64 {
 	return IfInt64Index(slice, index)
 }
 
-// 三目运算
+// If 三目运算
 func If(condition bool, a, b interface{}) interface{} {
 	if condition {
 		return a
@@ -31,7 +31,7 @@ func If(condition bool, a, b interface{}) interface{} {
 	return b
 }
 
-// 如果index存在，则返回切片对应index值
+// Ifindex 如果index存在，则返回切片对应index值
 func Ifindex(slice []interface{}, index int) interface{} {
 	if len(slice) > index {
 		return slice[index]

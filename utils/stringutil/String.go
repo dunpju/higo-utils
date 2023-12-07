@@ -101,7 +101,7 @@ func Float64String(f64 float64) string {
 	return strconv.FormatFloat(f64, 'f', -1, 64)
 }
 
-// 首字母大写
+// Ucfirst 首字母大写
 func Ucfirst(str string) string {
 	for i, v := range str {
 		return string(unicode.ToUpper(v)) + str[i+1:]
@@ -109,7 +109,7 @@ func Ucfirst(str string) string {
 	return ""
 }
 
-// 首字母小写
+// Lcfirst 首字母小写
 func Lcfirst(str string) string {
 	for i, v := range str {
 		return string(unicode.ToLower(v)) + str[i+1:]
@@ -117,7 +117,17 @@ func Lcfirst(str string) string {
 	return ""
 }
 
-// 驼峰式写法转为下划线写法
+// LCamelToCase 首字母小写驼峰
+func LCamelToCase(name string) string {
+	return Lcfirst(CamelToCase(name))
+}
+
+// UCamelToCase 首字母大写驼峰
+func UCamelToCase(name string) string {
+	return Ucfirst(CamelToCase(name))
+}
+
+// CamelToCase 驼峰式写法转为下划线写法
 func CamelToCase(name string) string {
 	buffer := NewBuffer()
 	for i, r := range name {
@@ -133,14 +143,14 @@ func CamelToCase(name string) string {
 	return buffer.String()
 }
 
-// 下划线写法转为驼峰写法
+// CaseToCamel 下划线写法转为驼峰写法
 func CaseToCamel(name string) string {
 	name = strings.Replace(name, "_", " ", -1)
 	name = strings.Title(name)
 	return strings.Replace(name, " ", "", -1)
 }
 
-// 内嵌bytes.Buffer，支持连写
+// Buffer 内嵌bytes.Buffer，支持连写
 type Buffer struct {
 	*bytes.Buffer
 }
