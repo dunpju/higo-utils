@@ -1,14 +1,31 @@
 package structutil
 
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+)
 
 type Struct struct {
 }
 
-func (this *Struct) IsEmpty(_struct interface{}) bool {
+func (this *Struct) IsEmpty(_struct interface{}) (bool, error) {
 	return IsEmpty(_struct)
 }
 
-func IsEmpty(_struct interface{}) bool {
-	return reflect.DeepEqual(_struct, reflect.Zero(reflect.TypeOf(_struct)).Interface())
+func IsEmpty(_struct interface{}) (bool, error) {
+	v := reflect.ValueOf(_struct)
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+	}
+
+	if v.Kind() != reflect.Struct {
+		return false, fmt.Errorf("not a struct")
+	}
+
+	for i := 0; i < v.NumField(); i++ {
+		if !reflect.DeepEqual(v.Field(i).Interface(), reflect.Zero(v.Field(i).Type()).Interface()) {
+			return false, nil
+		}
+	}
+	return true, nil
 }
