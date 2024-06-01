@@ -1,31 +1,32 @@
+//go:build windows
 // +build windows
 
 package runtimeutil
 
 import (
-	"fmt"
 	"syscall"
 )
 
-// 获取当前线程ID
-func ThreadID() int {
+// ThreadID 获取当前线程ID
+func ThreadID() (uint64, error) {
 	var user32 *syscall.DLL
-	var GetCurrentThreadId *syscall.Proc
+	var getCurrentThreadId *syscall.Proc
 	var err error
 
 	user32, err = syscall.LoadDLL("Kernel32.dll")
 	if err != nil {
-		panic(fmt.Sprintf("syscall.LoadDLL fail: %v\n", err.Error()))
-		return 0
+		return 0, err
 	}
-	GetCurrentThreadId, err = user32.FindProc("GetCurrentThreadId")
+	getCurrentThreadId, err = user32.FindProc("GetCurrentThreadId")
 	if err != nil {
-		panic(fmt.Sprintf("user32.FindProc fail: %v\n", err.Error()))
-		return 0
+		return 0, err
 	}
 
 	var pid uintptr
-	pid, _, err = GetCurrentThreadId.Call()
+	pid, _, err = getCurrentThreadId.Call()
+	if err != nil {
+		return 0, err
+	}
 
-	return int(pid)
+	return uint64(pid), nil
 }
