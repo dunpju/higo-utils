@@ -30,3 +30,7 @@ func ThreadID() (uint64, error) {
 
 	return uint64(pid), nil
 }
+
+func (this *Runtime) ThreadID() (uint64, error) {
+	return ThreadID()
+}
