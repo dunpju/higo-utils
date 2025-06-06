@@ -7,6 +7,7 @@ import (
 	"github.com/dunpju/higo-utils/utils/fileutil"
 	"github.com/dunpju/higo-utils/utils/gobutil"
 	"github.com/dunpju/higo-utils/utils/hostutil"
+	"github.com/dunpju/higo-utils/utils/listutil"
 	"github.com/dunpju/higo-utils/utils/maputil"
 	"github.com/dunpju/higo-utils/utils/modutil"
 	"github.com/dunpju/higo-utils/utils/phputil"
@@ -32,7 +33,7 @@ var (
 	Host    = &host{}
 	Map     = &maps{}
 	PHP     = &php{}
-	Proto   = &php{}
+	Proto   = &proto{}
 	Random  = &random{}
 	Rsa     = &rsa{}
 	Runtime = &runtime{}
@@ -66,3 +67,15 @@ type token struct{ tokenutil.Tokenutil }
 type ufunc struct{ ufuncutil.Ufuncutil }
 type mod struct{ modutil.Mod }
 type _struct struct{ structutil.Struct }
+
+func List[T any](list []T) *listutil.List[T] {
+	return listutil.NewList(list)
+}
+
+func ListToMap[T any](list []T, key string) *maputil.ArrayMap {
+	return listutil.ListToMap[T](list, key)
+}
+
+func Column[T any, E any](list []T) *listutil.ListColumn[T, E] {
+	return listutil.Column[T, E](list)
+}
